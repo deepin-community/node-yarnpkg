@@ -1,0 +1,27 @@
+Description: Replace dependency on leven with fast-levenshtein.
+ The latter is available as a Debian package.
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+Reviewed-By: Xavier Guimard <yadd@debian.org>
+Last-Update: 2020-03-30
+
+--- a/src/cli/commands/run.js
++++ b/src/cli/commands/run.js
+@@ -11,7 +11,7 @@
+ import * as constants from '../../constants.js';
+ 
+ const invariant = require('invariant');
+-const leven = require('leven');
++const levenshtein = require('fast-levenshtein');
+ const path = require('path');
+ const {quoteForShell, sh, unquoted} = require('puka');
+ 
+@@ -150,7 +150,7 @@
+       let suggestion;
+ 
+       for (const commandName of scripts.keys()) {
+-        const steps = leven(commandName, action);
++        const steps = levenshtein.get(commandName, action);
+         if (steps < 2) {
+           suggestion = commandName;
+         }

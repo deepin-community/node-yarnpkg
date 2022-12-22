@@ -1,0 +1,26 @@
+Description: Patch gulp-if away.
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/gulpfile.js
++++ b/gulpfile.js
+@@ -6,7 +6,6 @@
+ const babel = require('gulp-babel');
+ const sourcemaps = require('gulp-sourcemaps');
+ const log = require('fancy-log');
+-const gulpif = require('gulp-if');
+ const gulp = require('gulp');
+ const path = require('path');
+ const fs = require('fs');
+@@ -24,9 +23,9 @@
+         },
+       }))
+       .pipe(newer(lib))
+-      .pipe(gulpif(argv.sourcemaps, sourcemaps.init()))
++      .pipe(sourcemaps.init())
+       .pipe(babel(opts))
+-      .pipe(gulpif(argv.sourcemaps, sourcemaps.write('.', {sourceRoot: '../src'})))
++      .pipe(sourcemaps.write('.', {sourceRoot: '../src'}))
+       .pipe(gulp.dest(lib));
+ 
+ gulp.task('build', () =>

@@ -1,0 +1,246 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: yarn
+Upstream-Contact: https://github.com/yarnpkg/yarn/issues
+Source: https://github.com/yarnpkg/yarn/tags
+ https://registry.npmjs.org/decode-uri-component
+ https://registry.npmjs.org/dnscache
+ https://registry.npmjs.org/gunzip-maybe
+ https://registry.npmjs.org/hash-for-dep
+ https://registry.npmjs.org/is-deflate
+ https://registry.npmjs.org/is-gzip
+ https://registry.npmjs.org/normalize-url
+ https://registry.npmjs.org/npm-logical-tree
+ https://github.com/mafintosh/mkdirp-classic/tags
+ https://registry.npmjs.org/peek-stream
+ https://registry.npmjs.org/query-string
+ https://registry.npmjs.org/resolve-package-path
+ https://registry.npmjs.org/string-replace-loader
+ https://registry.npmjs.org/tar-fs
+ https://registry.npmjs.org/v8-compile-cache
+
+Files: *
+Copyright: 2016-2019, Yarn Contributors
+License: BSD-2-clause
+
+Files: __tests__/fixtures/autoclean/initialized/node_modules/left-pad/index.js
+  __tests__/fixtures/autoclean/initialized/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: __tests__/fixtures/autoclean/not-initialized/node_modules/left-pad/index.js
+  __tests__/fixtures/autoclean/not-initialized/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: __tests__/fixtures/autoclean/workspaces/foo/node_modules/left-pad/index.js
+  __tests__/fixtures/autoclean/workspaces/foo/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: __tests__/fixtures/autoclean/workspaces/node_modules/left-pad/index.js
+  __tests__/fixtures/autoclean/workspaces/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: __tests__/fixtures/check/resolutions-glob/node_modules/pad-left/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/check/resolutions-glob/node_modules/repeat-string/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/check/resolutions-tree/node_modules/pad-left/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/check/resolutions-tree/node_modules/repeat-string/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/check/resolutions/node_modules/pad-left/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/check/resolutions/node_modules/repeat-string/index.js
+Copyright: 2014, 2015, Jon Schlinkert.
+License: BSD-2-clause
+
+Files: __tests__/fixtures/install/lockfile-missing/node_modules/left-pad/index.js
+  __tests__/fixtures/install/lockfile-missing/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: __tests__/fixtures/upgrade/latest-with-install-script/node_modules/left-pad/index.js
+  __tests__/fixtures/upgrade/latest-with-install-script/node_modules/left-pad/test.js
+Copyright: 2016-2019, Yarn Contributors
+License: WTFPL-2
+
+Files: debian/*
+Copyright: 2016-2019, Paolo Greppi <paolo.greppi@libpf.com>
+License: GPL-3.0+
+
+Files: debian/build_modules/gulp-babel/*
+Copyright: Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: decode-uri-component/*
+Copyright: 2017, Sam Verschueren <sam.verschueren@gmail.com> (github.com/SamVerschueren)
+License: Expat
+
+Files: dnscache/*
+Copyright: 2013, Yahoo! Inc.
+License: BSD-3-clause
+
+Files: gunzip-maybe/*
+Copyright: 2016-2017, Mathias Buus <mathiasbuus@gmail.com>
+License: Expat
+
+Files: gunzip-maybe/index.js
+Copyright:
+ 2014-2017, Kevin Mårtensson <kevinmartensson@gmail.com>
+ 2016 Thomas Watson Steen
+License: Expat
+
+Files: hash-for-dep/*
+Copyright: 2016-2017, Stefan Penner <stefan.penner@gmail.com>
+License: Expat
+
+Files: is-deflate/*
+Copyright: 2016, Thomas Watson Steen <w@tson.dk>
+License: Expat
+
+Files: is-gzip/*
+Copyright: 2014-2017, Kevin Mårtensson <kevinmartensson@gmail.com> (github.com/kevva)
+License: Expat
+
+Files: normalize-url/*
+Copyright: 2017-2019, Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: npm-logical-tree/*
+Copyright: 2017-2018, npm Inc.
+License: Expat
+
+Files: peek-stream/*
+Copyright: 2014-2018, Mathias Buus <mathiasbuus@gmail.com>
+License: Expat
+
+Files: query-string/*
+Copyright: 2017-2018, Sindre Sorhus <sindresorhus@gmail.com> (sindresorhus.com)
+License: Expat
+
+Files: resolve-package-path/*
+Copyright: 2019, Stefan Penner <stefan.penner@gmail.com>
+License: Expat
+
+Files: scripts/_runCommand.js
+Copyright: 2014, Facebook, Inc.
+License: BSD-2-clause
+
+Files: string-replace-loader/*
+Copyright: 2015-2019, Valentyn Barmashyn <barmashyn.val@gmail.com>
+License: Expat
+
+Files: tar-fs/*
+Copyright: 2014-2017, Mathias Buus <mathiasbuus@gmail.com>
+License: Expat
+
+Files: v8-compile-cache/*
+Copyright: 2017-2018, Andres Suarez <zertosh@gmail.com>
+License: Expat
+
+License: BSD-2-clause
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+ .
+  * Redistributions of source code must retain the above copyright notice, this
+    list of conditions and the following disclaimer.
+ .
+  * Redistributions in binary form must reproduce the above copyright notice,
+    this list of conditions and the following disclaimer in the documentation
+    and/or other materials provided with the distribution.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: BSD-3-clause
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions
+ are met:
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+ 3. Neither the name of the University nor the names of its contributors
+    may be used to endorse or promote products derived from this software
+    without specific prior written permission.
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE HOLDERS OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: Expat
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+ BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+License: GPL-3.0+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This package is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ You should have received a copy of the GNU General Public License
+ along with this program. If not, see <https://www.gnu.org/licenses/>.
+ .
+ On Debian systems, the complete text of the GNU General
+ Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+
+License: WTFPL-2
+ Everyone is permitted to copy and distribute verbatim or modified
+ copies of this license document, and changing it is allowed as long
+ as the name is changed.
+ .
+ DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+ TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+ .
+ 0. You just DO WHAT THE FUCK YOU WANT TO.

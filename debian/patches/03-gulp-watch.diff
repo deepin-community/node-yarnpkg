@@ -1,0 +1,15 @@
+Description: Patch gulp-watch away.
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/gulpfile.js
++++ b/gulpfile.js
+@@ -34,8 +34,3 @@
+ );
+ 
+ gulp.task('default', gulp.task('build'));
+-
+-gulp.task(
+-  'watch',
+-  gulp.series('build', () => gulp.watch('src/**/*', gulp.task('build')))
+-);

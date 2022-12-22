@@ -1,0 +1,64 @@
+Description: Fix uuid import so that it works with recent versions.
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/src/cli/commands/import.js
++++ b/src/cli/commands/import.js
+@@ -35,7 +35,7 @@
+ 
+ const invariant = require('invariant');
+ const path = require('path');
+-const uuid = require('uuid');
++import { v4 as uuidv4 } from 'uuid';
+ const ssri = require('ssri');
+ const nodeVersion = process.versions.node.split('-')[0];
+ 
+@@ -111,7 +111,7 @@
+     info._remote = {
+       type: 'copy',
+       registry: this.registry,
+-      hash: `${uuid.v4()}-${new Date().getTime()}`,
++      hash: `${uuidv4()}-${new Date().getTime()}`,
+       reference: loc,
+     };
+     return info;
+--- a/src/cli/commands/install.js
++++ b/src/cli/commands/install.js
+@@ -38,7 +38,7 @@
+ const invariant = require('invariant');
+ const path = require('path');
+ const semver = require('semver');
+-const uuid = require('uuid');
++import { v4 as uuidv4 } from 'uuid';
+ const ssri = require('ssri');
+ 
+ const ONE_DAY = 1000 * 60 * 60 * 24;
+@@ -368,7 +368,7 @@
+         }
+         const virtualDependencyManifest: Manifest = {
+           _uid: '',
+-          name: `workspace-aggregator-${uuid.v4()}`,
++          name: `workspace-aggregator-${uuidv4()}`,
+           version: '1.0.0',
+           _registry: 'npm',
+           _loc: workspacesRoot,
+--- a/src/resolvers/exotics/file-resolver.js
++++ b/src/resolvers/exotics/file-resolver.js
+@@ -3,7 +3,7 @@
+ import path from 'path';
+ 
+ import invariant from 'invariant';
+-import uuid from 'uuid';
++import { v4 as uuidv4 } from 'uuid';
+ 
+ import type {Manifest} from '../../types.js';
+ import type PackageRequest from '../../package-request.js';
+@@ -75,7 +75,7 @@
+     manifest._remote = {
+       type: 'copy',
+       registry,
+-      hash: `${uuid.v4()}-${new Date().getTime()}`,
++      hash: `${uuidv4()}-${new Date().getTime()}`,
+       reference: loc,
+     };
+ 

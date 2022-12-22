@@ -1,0 +1,28 @@
+Description: When webpack fails, avoid misleading error "Unhandled rejection
+ TypeError: fileDependencies.map is not a function" caused by differing
+ internal data structures of our webpack (4.43.1) w.r.t. the webpack upstream
+ expects (2.7.0).
+ See: https://webpack.js.org/api/node/#statstostringoptions
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/scripts/build-webpack.js
++++ b/scripts/build-webpack.js
+@@ -114,9 +114,14 @@
+ });
+ 
+ compiler.run((err, stats) => {
+-  const fileDependencies = stats.compilation.fileDependencies;
+-  const filenames = fileDependencies.map(x => x.replace(basedir, ''));
+-  console.log(util.inspect(filenames, {maxArrayLength: null}));
++  if (err) {
++    console.error(err);
++    return;
++  }
++  console.log(stats.toString({
++    chunks: false,
++    colors: false
++  }));
+ });
+ 
+ //

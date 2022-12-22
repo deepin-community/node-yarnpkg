@@ -1,0 +1,17 @@
+yarnpkg for Debian
+------------------
+Note that this package launches external commands with child_process.exec
+which spawns a shell then executes the command within that shell, rather than
+with the more efficient and more secure child_process.execFile which does not
+spawn a shell, and spawns the specified executable file directly as a new
+process.
+
+This also means that it needs node-puka to sanitize the string passed to
+child_process.exec.
+
+Also see:
+- https://bugs.debian.org/886849
+- http://bonedaddy.net/pabs3/log/2014/02/17/pid-preservation-society/
+- https://github.com/yarnpkg/yarn/issues/5208
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Sat, 07 Apr 2018 15:38:31 +0200

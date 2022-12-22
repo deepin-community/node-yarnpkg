@@ -1,0 +1,15 @@
+Description: Use cli-table instead of cli-table3 which is not yet in Debian
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/src/reporters/console/console-reporter.js
++++ b/src/reporters/console/console-reporter.js
+@@ -20,7 +20,7 @@
+ import {removeSuffix} from '../../util/misc.js';
+ import {sortTrees, recurseTree, getFormattedOutput} from './helpers/tree-helper.js';
+ import inquirer from 'inquirer';
+-import Table from 'cli-table3';
++import Table from 'cli-table';
+ 
+ const {inspect} = require('util');
+ const readline = require('readline');

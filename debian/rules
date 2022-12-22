@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+include /usr/share/dpkg/pkg-info.mk
+
+%:
+	dh $@
+
+override_dh_auto_build:
+	find dnscache/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find hash-for-dep/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find normalize-url/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find npm-logical-tree/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find query-string/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find resolve-package-path/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find string-replace-loader/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find tar-fs/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	find v8-compile-cache/ -print0 | xargs -0r touch --no-dereference --date="@$$SOURCE_DATE_EPOCH"
+	marked-man --version "v${DEB_VERSION_UPSTREAM}" --section 1 --manual 'yarnpkg man page' --date="${SOURCE_DATE_EPOCH}000" debian/yarnpkg.md > debian/yarnpkg.1
+	gulp build
+	node ./scripts/build-webpack.js
+	rm -rf node_modules
+
+override_dh_fixperms:
+	dh_fixperms
+	chmod +x debian/yarnpkg/usr/share/nodejs/yarn/bin/yarn.js
+
+override_dh_auto_test:
+	# No tests during build

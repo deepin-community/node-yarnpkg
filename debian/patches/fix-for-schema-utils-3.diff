@@ -1,0 +1,14 @@
+Description: fix for schema-utils ≥ 3
+Author: Xavier Guimard <yadd@debian.org>
+Forwarded: no
+Last-Update: 2020-11-18
+
+--- a/string-replace-loader/lib/getOptionsArray.js
++++ b/string-replace-loader/lib/getOptionsArray.js
+@@ -1,5 +1,5 @@
+ const { getOptions } = require('loader-utils')
+-const validateOptions = require('schema-utils')
++const validateOptions = require('schema-utils').validate
+ 
+ const loaderName = 'string-replace-loader'
+ 

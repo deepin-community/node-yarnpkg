@@ -1,0 +1,14 @@
+Description: Patch away dependency on buffer-from
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/peek-stream/index.js
++++ b/peek-stream/index.js
+@@ -1,6 +1,6 @@
+ var duplexify = require('duplexify')
+ var through = require('through2')
+-var bufferFrom = require('buffer-from')
++var bufferFrom = Buffer.from
+ 
+ var noop = function() {}
+ 

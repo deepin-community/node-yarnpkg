@@ -1,0 +1,37 @@
+Description: Patch away is-ci (not packaged yet in Debian).
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/__tests__/commands/global.js
++++ b/__tests__/commands/global.js
+@@ -6,7 +6,7 @@
+ import {run as global} from '../../src/cli/commands/global.js';
+ import * as fs from '../../src/util/fs.js';
+ import mkdir from '../_temp.js';
+-const isCI = require('is-ci');
++var isCI = require('ci-info').isCI;
+ 
+ jasmine.DEFAULT_TIMEOUT_INTERVAL = 90000;
+ 
+--- a/src/reporters/base-reporter.js
++++ b/src/reporters/base-reporter.js
+@@ -18,7 +18,7 @@
+ 
+ import {defaultFormatter} from './format.js';
+ import * as languages from './lang/index.js';
+-import isCI from 'is-ci';
++var isCI = require('ci-info').isCI;
+ import os from 'os';
+ 
+ const util = require('util');
+--- a/src/config.js
++++ b/src/config.js
+@@ -22,7 +22,7 @@
+ const invariant = require('invariant');
+ const path = require('path');
+ const micromatch = require('micromatch');
+-const isCi = require('is-ci');
++var isCi = require('ci-info').isCI;
+ 
+ export type ConfigOptions = {
+   cwd?: ?string,

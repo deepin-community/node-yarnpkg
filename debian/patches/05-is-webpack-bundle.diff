@@ -1,0 +1,15 @@
+Description: Patch away one-liner module is-webpack-bundle
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/src/constants.js
++++ b/src/constants.js
+@@ -4,7 +4,7 @@
+ const path = require('path');
+ const userHome = require('./util/user-home-dir').default;
+ const {getCacheDir, getConfigDir, getDataDir} = require('./util/user-dirs');
+-const isWebpackBundle = require('is-webpack-bundle');
++const isWebpackBundle = typeof __webpack_require__ !== "undefined";
+ 
+ type Env = {
+   [key: string]: ?string,

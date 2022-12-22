@@ -1,0 +1,15 @@
+#!/bin/sh
+
+export HOME=${AUTOPKGTEST_TMP:-${TMPDIR:-/tmp}}
+mkdir -p ${HOME}/.cache/yarn
+set -ex
+cd
+mkdir project1
+cd project1
+yarnpkg init -y
+yarnpkg add pretty-ms
+ls node_modules/pretty-ms/index.js
+rm -rf node_modules
+rm -rf package.json
+cd ..
+rm -rf project1

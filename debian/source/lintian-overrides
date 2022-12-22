@@ -1,0 +1,5 @@
+# this file can be generated with the supplied scripts/generate-licenses-js.js
+node-yarnpkg source: very-long-line-length-in-source-file src/util/normalize-manifest/licenses.js *
+node-yarnpkg source: source-contains-prebuilt-javascript-object src/util/normalize-manifest/licenses.js *
+node-yarnpkg source: source-is-missing src/util/normalize-manifest/licenses.js *
+

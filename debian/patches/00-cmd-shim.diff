@@ -1,0 +1,61 @@
+Description: Patch away cmd-shim (only required on Windows).
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/src/cli/commands/link.js
++++ b/src/cli/commands/link.js
+@@ -7,7 +7,6 @@
+ import {getBinFolder as getGlobalBinFolder} from './global';
+ 
+ const invariant = require('invariant');
+-const cmdShim = require('@zkochan/cmd-shim');
+ const path = require('path');
+ 
+ export async function getRegistryFolder(config: Config, name: string): Promise<string> {
+@@ -75,7 +74,7 @@
+             reporter.warn(reporter.lang('binLinkCollision', binName));
+           } else {
+             if (process.platform === 'win32') {
+-              await cmdShim(binSrcLoc, binDestLoc, {createPwshFile: false});
++              ;
+             } else {
+               await fs.symlink(binSrcLoc, binDestLoc);
+             }
+--- a/src/fetchers/base-fetcher.js
++++ b/src/fetchers/base-fetcher.js
+@@ -10,7 +10,6 @@
+ import * as fs from '../util/fs.js';
+ import lockMutex from '../util/mutex.js';
+ 
+-const cmdShim = require('@zkochan/cmd-shim');
+ const path = require('path');
+ 
+ export default class BaseFetcher {
+@@ -81,7 +80,7 @@
+           if (process.platform === 'win32') {
+             const unlockMutex = await lockMutex(src);
+             try {
+-              await cmdShim.ifExists(src, `${binDest}/${binName}`, {createPwshFile: false});
++              ;
+             } finally {
+               unlockMutex();
+             }
+--- a/src/package-linker.js
++++ b/src/package-linker.js
+@@ -19,7 +19,6 @@
+ import WorkspaceLayout from './workspace-layout.js';
+ 
+ const invariant = require('invariant');
+-const cmdShim = require('@zkochan/cmd-shim');
+ const path = require('path');
+ const semver = require('semver');
+ // Concurrency for creating bin links disabled because of the issue #1961
+@@ -34,7 +33,7 @@
+   if (process.platform === 'win32') {
+     const unlockMutex = await lockMutex(src);
+     try {
+-      await cmdShim(src, dest, {createPwshFile: false});
++      ;
+     } finally {
+       unlockMutex();
+     }

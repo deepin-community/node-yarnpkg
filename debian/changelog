@@ -1,0 +1,209 @@
+node-yarnpkg (1.22.10+~cs22.25.14-4) unstable; urgency=medium
+
+  * Team upload
+  * Fix GitHub tags regex
+  * Add dependency to node-through2 required by gunzip-maybe
+  * Declare compliance with policy 4.6.0
+  * Refresh patches
+  * Drop unneeded (build-)dependency version constraints
+  * Update lintian overrides
+
+ -- Yadd <yadd@debian.org>  Wed, 06 Oct 2021 11:03:46 +0200
+
+node-yarnpkg (1.22.10+~cs22.25.14-3) unstable; urgency=medium
+
+  * Team upload
+
+  [ Paolo Greppi ]
+  * Use promise calling convention for proper-lockfile 3+ (Closes: #986117)
+
+  [ Xavier Guimard ]
+  * Fix GitHub tags regex in watch file
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Mon, 14 Jun 2021 20:25:04 +0200
+
+node-yarnpkg (1.22.10+~cs22.25.14-2) unstable; urgency=medium
+
+  * Fix date and version in manpage
+  * Fix uuid import so that it works with recent versions (Closes: #980775)
+  * Depend on node-babel7-runtime rather than node-babel7
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Thu, 28 Jan 2021 11:42:25 +0100
+
+node-yarnpkg (1.22.10+~cs22.25.14-1) unstable; urgency=medium
+
+  * Team upload
+  * Update tar-fs component to 2.1 and refactor watch file
+    (Closes: #977781) Thanks to Akshay S Dinesh
+  * New upstream version 1.22.10+~cs22.25.14
+
+ -- Pirate Praveen <praveen@debian.org>  Tue, 22 Dec 2020 17:31:25 +0530
+
+node-yarnpkg (1.22.10+~cs18.39.16-2) unstable; urgency=medium
+
+  * Add packaged node modules path in webpack configuration
+  * Add build dependencies required for webpack build
+  * Add node-resolve as build dependency and update minimum version
+  * List contents of node_modules in autopkgtest (expose failure)
+
+ -- Pirate Praveen <praveen@debian.org>  Mon, 21 Dec 2020 00:34:20 +0530
+
+node-yarnpkg (1.22.10+~cs18.39.16-1) unstable; urgency=medium
+
+  * Team upload
+  * Drop babel-plugin-transform-inline-imports-commonjs component
+  * Switch to group and checksum options in watch file
+  * New upstream version 1.22.10+~cs18.39.16
+  * Refresh patches (remove parts no longer needed)
+  * Add dependency on node-prepend-http and node-sort-keys (for normalize-url
+    component)
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 18 Dec 2020 17:50:36 +0530
+
+node-yarnpkg (1.22.4-6) unstable; urgency=medium
+
+  * Team upload
+
+  [ Pirate Praveen ]
+  * Drop node-babel-core and most of babel 6 build dependencies
+    and build with babel 7 (gulp-babel/babel-loader 8.x)
+  * Add back transform-inline-imports-commonjs to fix regression
+   (Closes: #960120)
+  * Add back node-babel-plugin-transform-strict-mode from babel 6
+
+  [ Paolo Greppi ]
+  * Avoid misleading error when webpack fails
+
+  [ Xavier Guimard ]
+  * Remove double build
+  * Fix autopkgtest
+  * Bump debhelper compatibility level to 13
+  * Use dh-sequence-nodejs
+  * Add fix for node-schema-utils ≥ 3
+
+  [ Akshay S Dinesh ]
+  * Remove optional dependency blocking babel-7 update (Closes: #960120)
+
+  [ Pirate Praveen ]
+  * Tighten dependency on node-request
+
+  [ Akshay S Dinesh ]
+  * feat: reimplement transform commonjs
+  * Remove erroring update message function
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 18 Dec 2020 15:32:39 +0530
+
+node-yarnpkg (1.22.4-5) unstable; urgency=medium
+
+  * Update autopkgtest to use 'yarnpkg add' in a clean project instead of
+    'yarnpkg install' command in the source tree (this fixes autopkgtest
+    failure with uuid 8.x because request module installed via yarnpkg is not
+    compatible with uuid 8.x)
+  * Replace node-node-uuid with node-uuid (Closes: #976155)
+
+ -- Pirate Praveen <praveen@debian.org>  Tue, 08 Dec 2020 20:32:50 +0530
+
+node-yarnpkg (1.22.4-4) unstable; urgency=medium
+
+  * Use mkdirp-classing and bump minimum version of node-mkdirp
+    (Closes: #973741)
+  * Build using snapshot.debian.org at 20200502T085134Z chroot
+
+ -- Pirate Praveen <praveen@debian.org>  Sun, 29 Nov 2020 01:16:23 +0530
+
+node-yarnpkg (1.22.4-3) unstable; urgency=medium
+
+  * Team upload
+  * Embed gulp-babel 6.1.2 to allow updating node-babel7 (Closes: #958780)
+
+ -- Pirate Praveen <praveen@debian.org>  Fri, 01 May 2020 23:10:45 +0530
+
+node-yarnpkg (1.22.4-2) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable
+  * Add dependency to ca-certificates (Closes: #952656)
+  * Provide node-yarn
+
+ -- Xavier Guimard <yadd@debian.org>  Thu, 02 Apr 2020 10:36:45 +0200
+
+node-yarnpkg (1.22.4-1) experimental; urgency=medium
+
+  * Team upload
+  * New upstream version 1.22.4 (Closes: #952912, CVE-2020-8131)
+  * Refresh patches
+  * Embed component: mkdirp-classic
+  * New upstream version 1.22.4
+  * Use pkg-js-tools auto install
+
+ -- Xavier Guimard <yadd@debian.org>  Mon, 30 Mar 2020 14:59:58 +0200
+
+node-yarnpkg (1.21.1-2) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable
+  * Add "Rules-Requires-Root: no"
+  * Add Bug-Submit field in metadata
+  * Remove outdated fields from metadata
+  * Declare compliance with policy 4.5.0
+  * Update lintian overrides
+  * Fix HOME for autopkgtest
+
+ -- Xavier Guimard <yadd@debian.org>  Mon, 30 Mar 2020 12:12:55 +0200
+
+node-yarnpkg (1.21.1-2~exp1) experimental; urgency=medium
+
+  * Fix unreasonably timestamped files from some upstream tarballs.
+    Closes: #947074.
+  * Require node-vinyl-fs version compatible with node-glob-stream 6.
+  * Switch to gulp 4.
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Mon, 23 Dec 2019 09:54:18 +0100
+
+node-yarnpkg (1.21.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Builds fine with webpack 4.7.0. Closes: #933498.
+  * Repack sources with xzip
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Tue, 17 Dec 2019 14:28:00 +0100
+
+node-yarnpkg (1.19.1-1) unstable; urgency=medium
+
+  * New upstream version
+  * Update embedded dependencies:
+    - dnscache 1.0.1 -> 1.0.2
+    - hash-for-dep 1.2.3 -> 1.5.1
+    - normalize-url 4.1.0 -> 4.5.0
+    - query-string 6.2.0 -> 6.8.3
+    - tar-fs 1.16.3 -> 2.0.0
+    - v8-compile-cache 2.0.2 -> 2.1.0
+  * New embedded build dependency string-replace-loader
+  * New embedded run-time dependency resolve-package-path
+  * Remove force-https patch because it is now included upstream
+  * Bump standard version
+  * Bump debhelper compat
+  * Remove debian/compat and replace debhelper by debhelper-compat
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Fri, 25 Oct 2019 08:24:36 +0200
+
+node-yarnpkg (1.13.0-3) unstable; urgency=medium
+
+  * Forces using https for the regular registries (Closes: #941354)
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Sun, 29 Sep 2019 14:07:45 +0200
+
+node-yarnpkg (1.13.0-2) unstable; urgency=medium
+
+  * De-embed strict-uri-encode component which is now available as a package
+  * Use pkg-info.mk to get SOURCE_DATE_EPOCH to pass to marked-man
+  * Install files in /usr/share/nodejs rather than /usr/lib/nodejs and so fix
+    lintian W nodejs-module-installed-in-usr-lib
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Mon, 16 Sep 2019 20:05:56 +0200
+
+node-yarnpkg (1.13.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #843021)
+
+ -- Paolo Greppi <paolo.greppi@libpf.com>  Sat, 26 Jan 2019 08:49:57 +0100

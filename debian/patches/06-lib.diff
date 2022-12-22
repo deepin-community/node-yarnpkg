@@ -1,0 +1,15 @@
+Description: Move build artifacts to debian/lib
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/gulpfile.js
++++ b/gulpfile.js
+@@ -29,7 +29,7 @@
+       .pipe(gulp.dest(lib));
+ 
+ gulp.task('build', () =>
+-  build('lib', babelRc.env[majorVer >= 5 ? 'node5' : 'pre-node5'])
++  build('debian/lib', babelRc.env[majorVer >= 5 ? 'node5' : 'pre-node5'])
+ );
+ 
+ gulp.task('default', gulp.task('build'));

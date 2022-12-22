@@ -1,0 +1,2 @@
+# Unneeded chmod+x
+script-not-executable usr/share/nodejs/yarn/node_modules/*

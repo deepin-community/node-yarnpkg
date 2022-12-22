@@ -1,0 +1,113 @@
+Description: Update babel plugins for version 7
+
+Author: Akshay S Dinesh <akshay@learnlearn.in>
+
+--- a/.babelrc
++++ /dev/null
+@@ -1,47 +0,0 @@
+-{
+- "env": {
+-    "pre-node5": {
+-      "presets": [
+-        ["@babel/env", {
+-          "targets": {
+-            "node": "4"
+-          },
+-          "modules": false,
+-          "loose": true,
+-          "exclude": [
+-            "@babel/transform-regenerator"
+-          ]
+-        }],
+-        "@babel/flow"
+-     ],
+-     "plugins": [
+-     ]
+-   },
+-   "test": {
+-     "presets": [
+-       ["env", {
+-         "targets": {
+-           "node": "current"
+-         },
+-         "modules": false,
+-         "loose": true
+-        }],
+-        "flow",
+-        "stage-0"
+-      ],
+-      "plugins": [
+-        ["transform-inline-imports-commonjs"]
+-      ]
+-    }
+-  },
+-  "presets": [
+-    "@babel/env",
+-    "@babel/flow"
+-  ],
+-  "plugins": [
+-    ["transform-inline-imports-commonjs"],
+-    ["@babel/transform-runtime"],
+-    ["@babel/proposal-class-properties"],
+-    ["@babel/transform-classes", { "globals": ["Error"] } ]
+-  ]
+-}
+--- /dev/null
++++ b/.babelrc.js
+@@ -0,0 +1,33 @@
++module.exports = {
++  "env": {
++    "test": {
++      "presets": [
++        ["env", {
++          "targets": {
++            "node": "current"
++          },
++          "modules": false,
++          "loose": true
++         }],
++         "flow",
++         "stage-0"
++       ],
++       "plugins": [
++         ["transform-inline-imports-commonjs"]
++       ]
++     }
++   },
++   "presets": [
++     "@babel/preset-env",
++     "@babel/preset-flow"
++   ],
++   "plugins": [
++    "@babel/syntax-dynamic-import",
++     ["@babel/transform-runtime"],
++     ["@babel/proposal-class-properties"],
++     ["@babel/transform-modules-commonjs", {
++      "lazy": (source) => true
++      }],
++     ["@babel/transform-classes", { "globals": ["Error"] } ]
++   ]
++ }
+\ No newline at end of file
+--- a/scripts/build-webpack.js
++++ b/scripts/build-webpack.js
+@@ -9,7 +9,7 @@
+ 
+ const version = require('../package.json').version;
+ const basedir = path.join(__dirname, '../');
+-const babelRc = JSON.parse(fs.readFileSync(path.join(basedir, '.babelrc'), 'utf8'));
++const babelRc = require(path.join(basedir, '.babelrc.js'))
+ 
+ var PnpResolver = {
+   apply: function(resolver) {
+--- a/gulpfile.js
++++ b/gulpfile.js
+@@ -10,8 +10,6 @@
+ const path = require('path');
+ const fs = require('fs');
+ 
+-const babelRc = JSON.parse(fs.readFileSync(path.join(__dirname, '.babelrc'), 'utf8'));
+-
+ const ver = process.versions.node;
+ const majorVer = parseInt(ver.split('.')[0], 10);
+ 

@@ -1,0 +1,23 @@
+Description: Remove unnecessary message to update yarn
+  which was also causing error
+Forwarded: not-needed
+Author: Akshay S Dinesh <akshay@learnlearn.in>
+
+--- a/src/cli/commands/install.js
++++ b/src/cli/commands/install.js
+@@ -735,7 +735,6 @@
+         if (auditFoundProblems) {
+           this.reporter.warn(this.reporter.lang('auditRunAuditForDetails'));
+         }
+-        this.maybeOutputUpdate();
+         return flattenedTopLevelPatterns;
+       }
+     }
+@@ -749,7 +748,6 @@
+     }
+     await this.saveLockfileAndIntegrity(topLevelPatterns, workspaceLayout);
+     await this.persistChanges();
+-    this.maybeOutputUpdate();
+     this.config.requestManager.clearCache();
+     return flattenedTopLevelPatterns;
+   }

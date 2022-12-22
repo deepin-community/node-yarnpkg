@@ -1,0 +1,76 @@
+version=4
+
+opts=\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-yarn-$1.tar.gz/ \
+ https://github.com/yarnpkg/yarn/tags .*/archive/.*/v?([\d\.]+).tar.gz group
+
+opts="searchmode=plain,ctype=nodejs,component=dnscache,pgpmode=none" \
+ https://registry.npmjs.org/dnscache \
+ https://registry.npmjs.org/dnscache/-/dnscache-(1[\d\.]+)@ARCHIVE_EXT@ checksum
+
+opts="searchmode=plain,ctype=nodejs,component=gunzip-maybe,pgpmode=none" \
+ https://registry.npmjs.org/gunzip-maybe \
+ https://registry.npmjs.org/gunzip-maybe/-/gunzip-maybe-(1[\d\.]+)@ARCHIVE_EXT@ checksum
+
+opts="searchmode=plain,ctype=nodejs,component=hash-for-dep,pgpmode=none" \
+ https://registry.npmjs.org/hash-for-dep \
+ https://registry.npmjs.org/hash-for-dep/-/hash-for-dep-(1[\d\.]+)@ARCHIVE_EXT@ checksum
+
+opts="searchmode=plain,ctype=nodejs,component=normalize-url,pgpmode=none" \
+ https://registry.npmjs.org/normalize-url \
+ https://registry.npmjs.org/normalize-url/-/normalize-url-(2[\d\.]+)@ARCHIVE_EXT@ checksum
+
+opts="searchmode=plain,ctype=nodejs,component=npm-logical-tree,pgpmode=none" \
+ https://registry.npmjs.org/npm-logical-tree \
+ https://registry.npmjs.org/npm-logical-tree/-/npm-logical-tree-(1[\d\.]+)@ARCHIVE_EXT@ checkum
+
+opts="searchmode=plain,ctype=nodejs,component=string-replace-loader,pgpmode=none" \
+ https://registry.npmjs.org/string-replace-loader \
+ https://registry.npmjs.org/string-replace-loader/-/string-replace-loader-(2[\d\.]+)@ARCHIVE_EXT@ checksum
+
+# we cannot use ctype=nodejs here as we need a newer version than mentioned package.json
+opts="searchmode=plain,pgpmode=none,component=tar-fs" \
+ https://registry.npmjs.org/tar-fs \
+ https://registry.npmjs.org/tar-fs/-/tar-fs-(2(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+opts="searchmode=plain,ctype=nodejs,component=v8-compile-cache,pgpmode=none,\
+" \
+ https://registry.npmjs.org/v8-compile-cache \
+ https://registry.npmjs.org/v8-compile-cache/-/v8-compile-cache-([\d\.]+)@ARCHIVE_EXT@ checksum
+
+opts=\
+component=mkdirp-classic,\
+dversionmangle=auto,\
+filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-mkdirp-classic-$1.tar.gz/ \
+ https://github.com/mafintosh/mkdirp-classic/tags .*/archive/.*/v?([\d\.]+).tar.gz checksum
+
+# dependency of another component, normalize-url so ctype=nodejs won't work
+opts="searchmode=plain,pgpmode=none,component=query-string" \
+ https://registry.npmjs.org/query-string \
+ https://registry.npmjs.org/query-string/-/query-string-(5(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# dependency of another component, gunzip-maybe so ctype=nodejs won't work
+opts="searchmode=plain,pgpmode=none,component=is-deflate" \
+ https://registry.npmjs.org/is-deflate \
+ https://registry.npmjs.org/is-deflate/-/is-deflate-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# dependency of another component, gunzip-maybe so ctype=nodejs won't work
+opts="searchmode=plain,pgpmode=none,component=is-gzip" \
+ https://registry.npmjs.org/is-gzip \
+ https://registry.npmjs.org/is-gzip/-/is-gzip-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# dependency of another component, gunzip-maybe so ctype=nodejs won't work
+opts="searchmode=plain,pgpmode=none,component=peek-stream" \
+ https://registry.npmjs.org/peek-stream \
+ https://registry.npmjs.org/peek-stream/-/peek-stream-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# dependency of another component, query-string so ctype=nodejs won't work
+opts="searchmode=plain,pgpmode=none,component=decode-uri-component" \
+ https://registry.npmjs.org/decode-uri-component \
+ https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-(0(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+
+# this component is probably not needed, not present in yarn.lock or any package.json
+opts="searchmode=plain,pgpmode=none,component=resolve-package-path" \
+ https://registry.npmjs.org/resolve-package-path \
+ https://registry.npmjs.org/resolve-package-path/-/resolve-package-path-(\d[\d\.]*)@ARCHIVE_EXT@ checksum

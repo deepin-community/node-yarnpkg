@@ -1,0 +1,17 @@
+Description: Do not use babel-plugin-inline-import
+ Rationale: there are no .text, .raw and .graphql files.
+ There is a single .tpl.js file in the repo, but there is no matching import.
+ So it seems this plugin is not used.
+Forwarded: not-needed
+Author: Paolo Greppi <paolo.greppi@libpf.com>
+
+--- a/.babelrc
++++ b/.babelrc
+@@ -52,7 +52,6 @@
+     "stage-0"
+   ],
+   "plugins": [
+-    ["babel-plugin-inline-import", { "extensions": [ ".tpl.js" ] }],
+     ["transform-inline-imports-commonjs"],
+     ["transform-runtime", { "polyfill": false, "regenerator": true }]
+   ]

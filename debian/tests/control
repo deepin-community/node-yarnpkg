@@ -1,0 +1,3 @@
+Tests: yarn
+Depends: @
+Restrictions: allow-stderr, needs-internet

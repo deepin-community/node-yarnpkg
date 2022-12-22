@@ -1,0 +1,21 @@
+Description: Use globally installed system modules (add debian's default directories)
+Forwarded: not-needed
+
+--- a/scripts/build-webpack.js
++++ b/scripts/build-webpack.js
+@@ -74,6 +74,15 @@
+     [`artifacts/yarn-${version}.js`]: path.join(basedir, 'src/cli/index.js'),
+     'packages/lockfile/index.js': path.join(basedir, 'src/lockfile/index.js'),
+   },
++
++  resolve: {
++    modules: ['node_modules','/usr/lib/nodejs', '/usr/share/nodejs'],
++  },
++
++  resolveLoader: {
++    modules: ['node_modules','/usr/lib/nodejs','/usr/share/nodejs'],
++   },
++
+   module: {
+     rules: [
+       {
