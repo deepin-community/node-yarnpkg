@@ -1,0 +1,20 @@
+!yoga
+!zlib-ng
+!arcanis-libzip
+packages/*
+algoliasearch-client-javascript/packages/*
+debian/build_modules/treeify
+debian/build_modules/tunnel
+debian/build_modules/git-url-parse
+debian/build_modules/git-up
+debian/build_modules/is-ssh
+debian/build_modules/protocols
+debian/build_modules/parse-path
+debian/build_modules/@arcanis/slice-ansi
+debian/build_modules/grapheme-splitter
+
+# do not install these modules
+# there should be more but i cant choose to not install but also build a component
+!arcanis-libzip
+!yoga
+!zlib-ng

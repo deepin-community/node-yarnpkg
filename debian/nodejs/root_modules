@@ -1,0 +1,22 @@
+# Don't install any component because I use debian/build_modules
+packages/*
+ink
+ink-text-input
+algoliasearch-client-javascript/packages/*
+dotenv
+tau-prolog
+tinylogic
+debian/build_modules/treeify
+debian/build_modules/tunnel
+debian/build_modules/git-url-parse
+debian/build_modules/git-up
+debian/build_modules/is-ssh
+debian/build_modules/protocols
+parse-url
+debian/build_modules/parse-path
+readline-sync
+yoga-wasm-web
+patch-console
+debian/build_modules/@arcanis/slice-ansi
+alcalzone-ansi-tokenize
+debian/build_modules/grapheme-splitter

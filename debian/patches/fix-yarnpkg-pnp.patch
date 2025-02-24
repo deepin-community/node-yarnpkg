@@ -1,0 +1,31 @@
+Patch file for @yarnpkg/pnp
+1. Allowed rollup to find dependencies
+--- a/packages/yarnpkg-pnp/rollup.config.js
++++ b/packages/yarnpkg-pnp/rollup.config.js
+@@ -40,7 +40,7 @@
+       resolve({
+         extensions: [`.mjs`, `.js`, `.ts`, `.tsx`, `.json`],
+         rootDir: path.join(__dirname, `../../`),
+-        jail: path.join(__dirname, `../../`),
++        // jail: path.join(__dirname, `../../`),
+         preferBuiltins: true,
+       }),
+       esbuild({
+@@ -67,7 +67,7 @@
+       resolve({
+         extensions: [`.mjs`, `.js`, `.ts`, `.tsx`, `.json`],
+         rootDir: path.join(__dirname, `../../`),
+-        jail: path.join(__dirname, `../../`),
++        // jail: path.join(__dirname, `../../`),
+         preferBuiltins: true,
+       }),
+       esbuild({
+@@ -95,7 +95,7 @@
+         resolve({
+           extensions: [`.mjs`, `.js`, `.ts`, `.tsx`, `.json`],
+           rootDir: path.join(__dirname, `../../`),
+-          jail: path.join(__dirname, `../../`),
++          // jail: path.join(__dirname, `../../`),
+           preferBuiltins: true,
+         }),
+         esbuild({

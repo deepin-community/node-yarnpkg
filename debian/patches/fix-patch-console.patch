@@ -1,0 +1,50 @@
+Patch file for component patch-console
+1. Copied content from extended tsconfig
+2. Forced cjs import of sinon
+--- a/patch-console/tsconfig.json
++++ b/patch-console/tsconfig.json
+@@ -1,6 +1,33 @@
+ {
+-	"extends": "@sindresorhus/tsconfig/tsconfig.json",
+ 	"compilerOptions": {
+-		"outDir": "dist"
++		"outDir": "dist",
++		"module": "ES2020",
++		"target": "ES2019",
++		"lib": [
++			"ES2019",
++			"ES2020.String",
++			"DOM",
++			"DOM.Iterable"
++		],
++		"moduleResolution": "node",
++		"allowSyntheticDefaultImports": true,
++		"resolveJsonModule": false,
++		"jsx": "react",
++		"declaration": true,
++		"pretty": true,
++		"newLine": "lf",
++		"stripInternal": true,
++		"strict": true,
++		"noImplicitReturns": true,
++		"noImplicitOverride": true,
++		"noUnusedLocals": true,
++		"noUnusedParameters": true,
++		"noFallthroughCasesInSwitch": true,
++		"noUncheckedIndexedAccess": true,
++		"noPropertyAccessFromIndexSignature": true,
++		"noEmitOnError": true,
++		"useDefineForClassFields": true,
++		"forceConsistentCasingInFileNames": true,
++		"skipLibCheck": true
+ 	}
+ }
+--- a/patch-console/test.js
++++ b/patch-console/test.js
+@@ -1,5 +1,5 @@
+ import test from 'ava';
+-import sinon from 'sinon';
++import sinon from '/usr/share/nodejs/sinon/lib/sinon.js';
+ import patch from './dist/index.js';
+ 
+ test('intercept console.log()', t => {
