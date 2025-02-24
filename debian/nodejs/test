@@ -1,0 +1,12 @@
+# these directories and files are needed for the test but are not present in the tarball so we create them
+mkdir -p packages/plugin-patch/tests/fixtures/create/a packages/plugin-patch/tests/fixtures/remove/b
+touch packages/plugin-patch/tests/fixtures/create/a/.gitkeep packages/plugin-patch/tests/fixtures/remove/b/.gitkeep
+touch packages/plugin-patch/tests/fixtures/create/b/.gitkeep packages/plugin-patch/tests/fixtures/remove/a/.gitkeep
+
+# actual test command
+# we exclude packages/plugin-compat/tests/resolve.test.ts because it is flaky
+jest -i --testPathPattern=packages --testPathIgnorePatterns=algoliasearch-client-javascript/packages/\|.pc/
+
+# cleanup directores and files
+rm -rf packages/plugin-patch/tests/fixtures/create/a packages/plugin-patch/tests/fixtures/remove/b
+rm packages/plugin-patch/tests/fixtures/create/b/.gitkeep packages/plugin-patch/tests/fixtures/remove/a/.gitkeep

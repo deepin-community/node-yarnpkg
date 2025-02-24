@@ -1,6 +1,7 @@
 ---
 Archive: GitHub
-Bug-Database: https://github.com/yarnpkg/yarn/issues
-Bug-Submit: https://github.com/yarnpkg/yarn/issues/new
-Repository: https://github.com/yarnpkg/yarn.git
-Repository-Browse: https://github.com/yarnpkg/yarn
+Bug-Database: https://github.com/yarnpkg/berry/issues
+Bug-Submit: https://github.com/yarnpkg/berry/issues/new
+Changelog: https://github.com/yarnpkg/berry/tags
+Repository: https://github.com/yarnpkg/berry.git
+Repository-Browse: https://github.com/yarnpkg/berry

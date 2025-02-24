@@ -1,0 +1,64 @@
+Patches for component alcalzone-ansi-tokenize
+1. Copied contents from the extended tsconfig
+   file and removed an unsupported tsconfig
+   flag
+2. Modified how tests are run. Instead of using
+   ava and tsnode, the typescript test files are
+   compiled and the js output is run using ava 
+--- a/alcalzone-ansi-tokenize/tsconfig.json
++++ b/alcalzone-ansi-tokenize/tsconfig.json
+@@ -1,6 +1,13 @@
+ {
+-	"extends": "@tsconfig/node14",
+ 	"compilerOptions": {
++		"lib": ["es2020"],
++		"module": "node16",
++		"target": "es2020",
++		"strict": true,
++		"esModuleInterop": true,
++		"skipLibCheck": true,
++		"forceConsistentCasingInFileNames": true,
++		"moduleResolution": "node16",
+ 		"noEmit": true,
+ 		"declaration": false,
+ 		// Never emit faulty JS
+@@ -8,7 +15,6 @@
+ 		"outDir": "build/",
+ 		"removeComments": false,
+ 		// Avoid runtime imports that are unnecessary
+-		"ignoreDeprecations": "5.0",
+ 		"importsNotUsedAsValues": "error",
+ 		// Required for TS debugging
+ 		"sourceMap": true,
+@@ -20,4 +26,4 @@
+ 		"test/**/*.ts"
+ 	],
+ 	"exclude": []
+-}
+\ No newline at end of file
++}
+--- /dev/null
++++ b/alcalzone-ansi-tokenize/tsconfig.test.json
+@@ -0,0 +1,9 @@
++{
++       "extends": "./tsconfig.json",
++       "compilerOptions": {
++               "noEmit": false,
++       },
++       "include": [
++               "test/**/*.ts"
++       ]
++}
+--- a/alcalzone-ansi-tokenize/package.json
++++ b/alcalzone-ansi-tokenize/package.json
+@@ -54,10 +54,5 @@
+     "lint": "eslint .",
+     "release": "release-script"
+   },
+-  "ava": {
+-    "extensions": {
+-      "ts": "module"
+-    }
+-  },
+   "packageManager": "yarn@3.5.0"
+ }

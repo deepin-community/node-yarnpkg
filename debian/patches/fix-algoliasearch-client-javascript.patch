@@ -1,0 +1,98 @@
+Patch file for component algoliasearch-client-javascript
+1. Stopped parallel execution of rollup
+2. Stopped creation of type definitions due to unavailable
+   dependencies
+3. Removed useless rollup plugin
+--- a/algoliasearch-client-javascript/scripts/build.js
++++ b/algoliasearch-client-javascript/scripts/build.js
+@@ -9,6 +9,7 @@
+ run();
+ 
+ async function run() {
++  /*
+   if (process.env.CIRCLE_BUILD_NUM) {
+     // eslint-disable-next-line functional/no-loop-statement
+     for (const target of targets) {
+@@ -17,20 +18,27 @@
+   } else {
+     await Promise.all(targets.map(target => build(target)));
+   }
++  */
++
++  for (const target of targets) {
++    await build(target);
++  }
+ }
+ 
+ async function build(target) {
+   await fs.remove(`packages/${target}/dist`);
+ 
+-  await execa(`rollup`, ['-c', '--environment', [`TARGET:${target}`].join(',')], {
++  await execa(`rollup`, ['-c', '--bundleConfigAsCjs', '--environment', [`TARGET:${target}`].join(',')], {
+     stdio: 'inherit',
+   });
+ 
+-  await buildDefinition(target);
++  // await buildDefinition(target);
+ 
++  /*
+   if (target === 'algoliasearch') {
+     await buildDefinition('algoliasearch', 'lite');
+   }
++  */
+ 
+   await fs.remove(path.resolve(`packages/${target}/dist/packages`));
+ }
+--- a/algoliasearch-client-javascript/rollup.config.js
++++ b/algoliasearch-client-javascript/rollup.config.js
+@@ -4,8 +4,8 @@
+ import json from '@rollup/plugin-json';
+ import fs from 'fs';
+ import path from 'path';
+-import babel from 'rollup-plugin-babel';
+-import filesize from 'rollup-plugin-filesize';
++import babel from '@rollup/plugin-babel';
++// import filesize from 'rollup-plugin-filesize';
+ import ignore from 'rollup-plugin-ignore';
+ import globals from 'rollup-plugin-node-globals';
+ import { terser } from 'rollup-plugin-terser';
+@@ -157,6 +157,8 @@
+     };
+ 
+     packageConfig.formats.forEach(format => {
++      if (format !== 'cjs') return;
++
+       const output = bundlers[format];
+ 
+       const isUmdBuild = /\.umd.js$/.test(output.file);
+@@ -223,10 +225,12 @@
+           alias(aliasOptions),
+           ...transpilerPlugins,
+           ...compressorPlugins,
++          /*
+           filesize({
+             showMinifiedSize: false,
+             showGzippedSize: true,
+           }),
++          */
+         ],
+         output,
+         onwarn(msg, warn) {
+--- a/algoliasearch-client-javascript/tsconfig.json
++++ b/algoliasearch-client-javascript/tsconfig.json
+@@ -17,12 +17,13 @@
+     "esModuleInterop": true,
+     "removeComments": false,
+     "lib": ["esnext", "dom"],
+-    "types": ["jest", "node", "webdriverio"],
++    "types": ["node"],
+     "rootDir": ".",
+     "paths": {
+       "algoliasearch": ["packages/algoliasearch/src/builds/node"],
+       "@algolia/*": ["packages/*/src"]
+-    }
++    },
++    "useUnknownInCatchVariables": false
+   },
+   "include": ["packages/**/src/**/*.ts", "global.d.ts"]
+ }

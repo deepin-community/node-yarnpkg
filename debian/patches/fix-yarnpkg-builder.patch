@@ -1,0 +1,42 @@
+Patch file for @yarnpkg/builder
+1. Replaced esbuild with esbuild-wasm (see
+   @yarnpkg/builder/package.json)
+--- a/packages/yarnpkg-builder/sources/boot-cli-dev.js
++++ b/packages/yarnpkg-builder/sources/boot-cli-dev.js
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env node
+ 
+-require(`@yarnpkg/monorepo/scripts/setup-ts-execution`);
++require(`../../../scripts/setup-ts-execution`);
+ 
+ require(`./cli`);
+--- a/packages/yarnpkg-builder/sources/commands/build/bundle.ts
++++ b/packages/yarnpkg-builder/sources/commands/build/bundle.ts
+@@ -4,7 +4,7 @@
+ import chalk                                                                from 'chalk';
+ import cp                                                                   from 'child_process';
+ import {Command, Option, Usage}                                             from 'clipanion';
+-import {build, Plugin}                                                      from 'esbuild';
++import {build, Plugin}                                                      from 'esbuild-wasm';
+ import {createRequire}                                                      from 'module';
+ import path                                                                 from 'path';
+ import semver                                                               from 'semver';
+@@ -141,6 +141,7 @@
+           minify: !this.noMinify,
+           sourcemap: this.sourceMap ? `inline` : false,
+           target: `node${semver.minVersion(pkg.engines.node)!.version}`,
++          tsconfig: path.resolve(basedir, `../../tsconfig.json`)
+         });
+ 
+         for (const warning of res.warnings) {
+--- a/packages/yarnpkg-builder/sources/commands/build/plugin.ts
++++ b/packages/yarnpkg-builder/sources/commands/build/plugin.ts
+@@ -1,7 +1,7 @@
+ import {StreamReport, MessageName, Configuration, formatUtils, structUtils} from '@yarnpkg/core';
+ import {npath, ppath, xfs}                                                  from '@yarnpkg/fslib';
+ import {Command, Option, Usage, UsageError}                                 from 'clipanion';
+-import {build, Plugin}                                                      from 'esbuild';
++import {build, Plugin}                                                      from 'esbuild-wasm';
+ import path                                                                 from 'path';
+ import semver                                                               from 'semver';
+ 

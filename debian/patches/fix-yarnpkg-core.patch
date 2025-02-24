@@ -1,0 +1,200 @@
+Patch file for @yarnpkg/core
+1. Renamed import isCI to isCIImport to fix naming conflict
+   with class field isCI (terser couldn't differentiate
+   between them)
+2. Moved some contents of tgzUtils.ts to tgzUtilsExt.ts to
+   decouple the bundle output and the tgzUtils.ts file
+--- a/packages/yarnpkg-core/sources/Configuration.ts
++++ b/packages/yarnpkg-core/sources/Configuration.ts
+@@ -2,7 +2,7 @@
+ import {Filename, PortablePath, npath, ppath, xfs}                                                               from '@yarnpkg/fslib';
+ import {parseSyml, stringifySyml}                                                                                from '@yarnpkg/parsers';
+ import camelcase                                                                                                 from 'camelcase';
+-import {isCI, isPR, GITHUB_ACTIONS}                                                                              from 'ci-info';
++import {isCI as isCIImport, isPR, GITHUB_ACTIONS}                                                                from 'ci-info';
+ import {UsageError}                                                                                              from 'clipanion';
+ import {parse as parseDotEnv}                                                                                    from 'dotenv';
+ import {builtinModules}                                                                                          from 'module';
+@@ -287,7 +287,7 @@
+   enableInlineBuilds: {
+     description: `If true, the CLI will print the build output on the command line`,
+     type: SettingsType.BOOLEAN,
+-    default: isCI,
++    default: isCIImport,
+     defaultText: `<dynamic>`,
+   },
+   enableMessageNames: {
+@@ -298,7 +298,7 @@
+   enableProgressBars: {
+     description: `If true, the CLI is allowed to show a progress bar for long-running events`,
+     type: SettingsType.BOOLEAN,
+-    default: !isCI,
++    default: !isCIImport,
+     defaultText: `<dynamic>`,
+   },
+   enableTimers: {
+@@ -309,7 +309,7 @@
+   enableTips: {
+     description: `If true, installs will print a helpful message every day of the week`,
+     type: SettingsType.BOOLEAN,
+-    default: !isCI,
++    default: !isCIImport,
+     defaultText: `<dynamic>`,
+   },
+   preferInteractive: {
+@@ -1061,7 +1061,7 @@
+ 
+   public static telemetry: TelemetryManager | null = null;
+ 
+-  public isCI = isCI;
++  public isCI = isCIImport;
+ 
+   public startingCwd: PortablePath;
+   public projectCwd: PortablePath | null = null;
+--- /dev/null
++++ b/packages/yarnpkg-core/sources/tgzUtilsExt.ts
+@@ -0,0 +1,123 @@
++import {FakeFS, PortablePath, NodeFS, ppath, xfs, npath, constants, statUtils} from '@yarnpkg/fslib';
++import {ZipCompression, ZipFS}                                      from '@yarnpkg/libzip';
++import {PassThrough, Readable}                                      from 'stream';
++import tar                                                          from 'tar';
++import * as miscUtils                                               from './miscUtils';
++
++export interface ExtractBufferOptions {
++  prefixPath?: PortablePath;
++  stripComponents?: number;
++}
++
++export type ConvertToZipPayload = {
++  tmpFile: PortablePath;
++  tgz: Buffer | Uint8Array;
++  extractBufferOpts: ExtractBufferOptions;
++  compressionLevel: ZipCompression;
++};
++
++export async function convertToZipWorker(data: ConvertToZipPayload) {
++  const {tmpFile, tgz, compressionLevel, extractBufferOpts} = data;
++
++  const zipFs = new ZipFS(tmpFile, {create: true, level: compressionLevel, stats: statUtils.makeDefaultStats()});
++
++  // Buffers sent through Node are turned into regular Uint8Arrays
++  const tgzBuffer = Buffer.from(tgz.buffer, tgz.byteOffset, tgz.byteLength);
++  await extractArchiveTo(tgzBuffer, zipFs, extractBufferOpts);
++
++  zipFs.saveAndClose();
++
++  return tmpFile;
++}
++
++async function * parseTar(tgz: Buffer) {
++  // @ts-expect-error - Types are wrong about what this function returns
++  const parser: tar.ParseStream = new tar.Parse();
++
++  const passthrough = new PassThrough({objectMode: true, autoDestroy: true, emitClose: true});
++
++  parser.on(`entry`, (entry: tar.ReadEntry) => {
++    passthrough.write(entry);
++  });
++
++  parser.on(`error`, error => {
++    passthrough.destroy(error);
++  });
++
++  parser.on(`close`, () => {
++    if (!passthrough.destroyed) {
++      passthrough.end();
++    }
++  });
++
++  parser.end(tgz);
++
++  for await (const entry of passthrough) {
++    const it = entry as tar.ReadEntry;
++    yield it;
++    it.resume();
++  }
++}
++
++export async function extractArchiveTo<T extends FakeFS<PortablePath>>(tgz: Buffer, targetFs: T, {stripComponents = 0, prefixPath = PortablePath.dot}: ExtractBufferOptions = {}): Promise<T> {
++  function ignore(entry: tar.ReadEntry) {
++    // Disallow absolute paths; might be malicious (ex: /etc/passwd)
++    if (entry.path[0] === `/`)
++      return true;
++
++    const parts = entry.path.split(/\//g);
++
++    // We also ignore paths that could lead to escaping outside the archive
++    if (parts.some((part: string) => part === `..`))
++      return true;
++
++    if (parts.length <= stripComponents)
++      return true;
++
++    return false;
++  }
++
++  for await (const entry of parseTar(tgz)) {
++    if (ignore(entry))
++      continue;
++
++    const parts = ppath.normalize(npath.toPortablePath(entry.path)).replace(/\/$/, ``).split(/\//g);
++    if (parts.length <= stripComponents)
++      continue;
++
++    const slicePath = parts.slice(stripComponents).join(`/`) as PortablePath;
++    const mappedPath = ppath.join(prefixPath, slicePath);
++
++    let mode = 0o644;
++
++    // If a single executable bit is set, normalize so that all are
++    if (entry.type === `Directory` || ((entry.mode ?? 0) & 0o111) !== 0)
++      mode |= 0o111;
++
++    switch (entry.type) {
++      case `Directory`: {
++        targetFs.mkdirpSync(ppath.dirname(mappedPath), {chmod: 0o755, utimes: [constants.SAFE_TIME, constants.SAFE_TIME]});
++
++        targetFs.mkdirSync(mappedPath, {mode});
++        targetFs.utimesSync(mappedPath, constants.SAFE_TIME, constants.SAFE_TIME);
++      } break;
++
++      case `OldFile`:
++      case `File`: {
++        targetFs.mkdirpSync(ppath.dirname(mappedPath), {chmod: 0o755, utimes: [constants.SAFE_TIME, constants.SAFE_TIME]});
++
++        targetFs.writeFileSync(mappedPath, await miscUtils.bufferStream(entry as unknown as Readable), {mode});
++        targetFs.utimesSync(mappedPath, constants.SAFE_TIME, constants.SAFE_TIME);
++      } break;
++
++      case `SymbolicLink`: {
++        targetFs.mkdirpSync(ppath.dirname(mappedPath), {chmod: 0o755, utimes: [constants.SAFE_TIME, constants.SAFE_TIME]});
++
++        targetFs.symlinkSync((entry as any).linkpath, mappedPath);
++        targetFs.lutimesSync(mappedPath, constants.SAFE_TIME, constants.SAFE_TIME);
++      } break;
++    }
++  }
++
++  return targetFs;
++}
+--- a/packages/yarnpkg-core/sources/worker-zip/Worker.ts
++++ b/packages/yarnpkg-core/sources/worker-zip/Worker.ts
+@@ -1,6 +1,6 @@
+ import {parentPort}                              from 'worker_threads';
+ 
+-import {convertToZipWorker, ConvertToZipPayload} from '../tgzUtils';
++import {convertToZipWorker, ConvertToZipPayload} from '../tgzUtilsExt';
+ 
+ 
+ if (!parentPort)
+--- a/packages/yarnpkg-core/rollup.config.js
++++ b/packages/yarnpkg-core/rollup.config.js
+@@ -41,7 +41,7 @@
+     resolve({
+       extensions: [`.mjs`, `.js`, `.ts`, `.tsx`, `.json`],
+       rootDir: path.join(__dirname, `../../`),
+-      jail: path.join(__dirname, `../../`),
++      // jail: path.join(__dirname, `../../`),
+       preferBuiltins: true,
+     }),
+     esbuild({

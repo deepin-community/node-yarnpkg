@@ -1,0 +1,2 @@
+tsc
+NODE_OPTIONS=--experimental-vm-modules jest test/*.js

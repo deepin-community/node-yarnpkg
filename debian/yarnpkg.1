@@ -1,0 +1,256 @@
+.TH YARN "1" "October 2023" "yarnpkg 4.0.1" "User Commands"
+.SH NAME
+yarn \- Yarn: Fast, reliable, and secure dependency management
+.SH DESCRIPTION
+Yarn Package Manager \- 4.0.1
+.IP
+yarn <command>
+.PP
+General commands
+.IP
+yarn add [\-\-json] [\-F,\-\-fixed] [\-E,\-\-exact] [\-T,\-\-tilde] [\-C,\-\-caret] [\-D,\-\-dev] [\-P,\-\-peer] [\-O,\-\-optional] [\-\-prefer\-dev] [\-i,\-\-interactive] [\-\-cached] [\-\-mode #0] ...
+.IP
+add dependencies to the project
+.IP
+yarn bin [\-v,\-\-verbose] [\-\-json] [name]
+.IP
+get the path to a binary script
+.IP
+yarn cache clean [\-\-mirror] [\-\-all]
+.IP
+remove the shared cache files
+.IP
+yarn config [\-\-no\-defaults] [\-\-json] ...
+.IP
+display the current configuration
+.IP
+yarn config get [\-\-why] [\-\-json] [\-\-no\-redacted] <name>
+.IP
+read a configuration settings
+.IP
+yarn config set [\-\-json] [\-H,\-\-home] <name> <value>
+.IP
+change a configuration settings
+.IP
+yarn config unset [\-H,\-\-home] <name>
+.IP
+unset a configuration setting
+.IP
+yarn dedupe [\-s,\-\-strategy #0] [\-c,\-\-check] [\-\-json] [\-\-mode #0] ...
+.IP
+deduplicate dependencies with overlapping ranges
+.IP
+yarn dlx [\-p,\-\-package #0] [\-q,\-\-quiet] <command> ...
+.IP
+run a package in a temporary environment
+.IP
+yarn exec <commandName> ...
+.IP
+execute a shell script
+.IP
+yarn explain [\-\-json] [code]
+.IP
+explain an error code
+.IP
+yarn explain peer\-requirements [hash]
+.IP
+explain a set of peer requirements
+.IP
+yarn info [\-A,\-\-all] [\-R,\-\-recursive] [\-X,\-\-extra #0] [\-\-cache] [\-\-dependents] [\-\-manifest] [\-\-name\-only] [\-\-virtuals] [\-\-json] ...
+.IP
+see information related to packages
+.IP
+yarn init [\-p,\-\-private] [\-w,\-\-workspace] [\-i,\-\-install] [\-n,\-\-name #0]
+.IP
+create a new package
+.IP
+yarn install [\-\-json] [\-\-immutable] [\-\-immutable\-cache] [\-\-refresh\-lockfile] [\-\-check\-cache] [\-\-check\-resolutions] [\-\-inline\-builds] [\-\-mode #0]
+.IP
+install the project dependencies
+.IP
+yarn link [\-A,\-\-all] [\-p,\-\-private] [\-r,\-\-relative] ...
+.IP
+connect the local project to another one
+.IP
+yarn node ...
+.IP
+run node with the hook already setup
+.IP
+yarn npm audit [\-A,\-\-all] [\-R,\-\-recursive] [\-\-environment #0] [\-\-json] [\-\-no\-deprecations] [\-\-severity #0] [\-\-exclude #0] [\-\-ignore #0]
+.IP
+perform a vulnerability audit against the installed packages
+.IP
+yarn pack [\-\-install\-if\-needed] [\-n,\-\-dry\-run] [\-\-json] [\-o,\-\-out #0]
+.IP
+generate a tarball from the active workspace
+.IP
+yarn patch [\-u,\-\-update] [\-\-json] <package>
+.IP
+prepare a package for patching
+.IP
+yarn patch\-commit [\-s,\-\-save] <patchFolder>
+.IP
+generate a patch out of a directory
+.IP
+yarn rebuild ...
+.IP
+rebuild the project's native packages
+.IP
+yarn remove [\-A,\-\-all] [\-\-mode #0] ...
+.IP
+remove dependencies from the project
+.IP
+yarn run [\-\-inspect] [\-\-inspect\-brk] [\-T,\-\-top\-level] [\-B,\-\-binaries\-only] [\-\-require #0] <scriptName> ...
+.IP
+run a script defined in the package.json
+.IP
+yarn set resolution [\-s,\-\-save] <descriptor> <resolution>
+.IP
+enforce a package resolution
+.IP
+yarn set version [\-\-yarn\-path] [\-\-only\-if\-needed] <version>
+.IP
+lock the Yarn version used by the project
+.IP
+yarn set version from sources [\-\-path #0] [\-\-repository #0] [\-\-branch #0] [\-\-plugin #0] [\-n,\-\-dry\-run] [\-\-no\-minify] [\-f,\-\-force] [\-\-skip\-plugins]
+.IP
+build Yarn from master
+.IP
+yarn stage [\-c,\-\-commit] [\-r,\-\-reset] [\-n,\-\-dry\-run]
+.IP
+add all yarn files to your vcs
+.IP
+yarn unlink [\-A,\-\-all] ...
+.IP
+disconnect the local project from another one
+.IP
+yarn unplug [\-A,\-\-all] [\-R,\-\-recursive] [\-\-json] ...
+.IP
+force the unpacking of a list of packages
+.IP
+yarn up [\-i,\-\-interactive] [\-F,\-\-fixed] [\-E,\-\-exact] [\-T,\-\-tilde] [\-C,\-\-caret] [\-R,\-\-recursive] [\-\-mode #0] ...
+.IP
+upgrade dependencies across the project
+.IP
+yarn why [\-R,\-\-recursive] [\-\-json] [\-\-peers] <package>
+.IP
+display the reason why a package is needed
+.PP
+Constraints\-related commands
+.IP
+yarn constraints [\-\-fix] [\-\-json]
+.IP
+check that the project constraints are met
+.IP
+yarn constraints query [\-\-json] <query>
+.IP
+query the constraints fact database
+.IP
+yarn constraints source [\-v,\-\-verbose]
+.IP
+print the source code for the constraints
+.PP
+Interactive commands
+.IP
+yarn search
+.IP
+open the search interface
+.IP
+yarn upgrade\-interactive
+.IP
+open the upgrade interface
+.PP
+Npm\-related commands
+.IP
+yarn npm info [\-f,\-\-fields #0] [\-\-json] ...
+.IP
+show information about a package
+.IP
+yarn npm login [\-s,\-\-scope #0] [\-\-publish] [\-\-always\-auth]
+.IP
+store new login info to access the npm registry
+.IP
+yarn npm logout [\-s,\-\-scope #0] [\-\-publish] [\-A,\-\-all]
+.IP
+logout of the npm registry
+.IP
+yarn npm publish [\-\-access #0] [\-\-tag #0] [\-\-tolerate\-republish] [\-\-otp #0]
+.IP
+publish the active workspace to the npm registry
+.IP
+yarn npm tag add <package> <tag>
+.IP
+add a tag for a specific version of a package
+.IP
+yarn npm tag list [\-\-json] [package]
+.IP
+list all dist\-tags of a package
+.IP
+yarn npm tag remove <package> <tag>
+.IP
+remove a tag from a package
+.IP
+yarn npm whoami [\-s,\-\-scope #0] [\-\-publish]
+.IP
+display the name of the authenticated user
+.PP
+Plugin\-related commands
+.IP
+yarn plugin check [\-\-json]
+.IP
+find all third\-party plugins that differ from their own spec
+.IP
+yarn plugin import [\-\-checksum] <name>
+.IP
+download a plugin
+.IP
+yarn plugin import from sources [\-\-path #0] [\-\-repository #0] [\-\-branch #0] [\-\-no\-minify] [\-f,\-\-force] <name>
+.IP
+build a plugin from sources
+.IP
+yarn plugin list [\-\-json]
+.IP
+list the available official plugins
+.IP
+yarn plugin remove <name>
+.IP
+remove a plugin
+.IP
+yarn plugin runtime [\-\-json]
+.IP
+list the active plugins
+.PP
+Release\-related commands
+.IP
+yarn version [\-d,\-\-deferred] [\-i,\-\-immediate] <strategy>
+.IP
+apply a new version to the current package
+.IP
+yarn version apply [\-\-all] [\-\-dry\-run] [\-\-prerelease] [\-R,\-\-recursive] [\-\-json]
+.IP
+apply all the deferred version bumps at once
+.IP
+yarn version check [\-i,\-\-interactive]
+.IP
+check that all the relevant packages have been bumped
+.PP
+Workspace\-related commands
+.IP
+yarn workspace <workspaceName> <commandName> ...
+.IP
+run a command within the specified workspace
+.IP
+yarn workspaces focus [\-\-json] [\-\-production] [\-A,\-\-all] ...
+.IP
+install a single workspace and its dependencies
+.IP
+yarn workspaces foreach [\-\-from #0] [\-A,\-\-all] [\-R,\-\-recursive] [\-W,\-\-worktree] [\-v,\-\-verbose] [\-p,\-\-parallel] [\-i,\-\-interlaced] [\-j,\-\-jobs #0] [\-t,\-\-topological] [\-\-topological\-dev] [\-\-include #0] [\-\-exclude #0] [\-\-no\-private] [\-\-since] [\-n,\-\-dry\-run] <commandName> ...
+.IP
+run a command on all workspaces
+.IP
+yarn workspaces list [\-\-since] [\-R,\-\-recursive] [\-\-no\-private] [\-v,\-\-verbose] [\-\-json]
+.IP
+list all available workspaces
+.PP
+You can also print more details about any of these commands by calling them with
+the `\-h,\-\-help` flag right after the command name.

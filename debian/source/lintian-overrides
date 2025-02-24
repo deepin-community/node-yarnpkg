@@ -1,5 +1,5 @@
-# this file can be generated with the supplied scripts/generate-licenses-js.js
-node-yarnpkg source: very-long-line-length-in-source-file src/util/normalize-manifest/licenses.js *
-node-yarnpkg source: source-contains-prebuilt-javascript-object src/util/normalize-manifest/licenses.js *
-node-yarnpkg source: source-is-missing src/util/normalize-manifest/licenses.js *
-
+# I believe the files were written by hand, but a formatter was used to restrict expressions to a single line
+source-is-missing [tau-prolog/modules/*.js]
+source-is-missing [rollup-plugin-node-globals/src/inject/makeLegalIdentifier.js]
+source-contains-prebuilt-javascript-object [tau-prolog/modules/*.js]
+source-contains-prebuilt-javascript-object [rollup-plugin-node-globals/src/inject/makeLegalIdentifier.js]

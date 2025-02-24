@@ -1,0 +1,27 @@
+Patch file for component rollup-plugin-node-globals
+1. Fixed import names
+--- a/rollup-plugin-node-globals/rollup.config.js
++++ b/rollup-plugin-node-globals/rollup.config.js
+@@ -1,4 +1,4 @@
+-import babel from 'rollup-plugin-babel';
++import babel from '@rollup/plugin-babel';
+ 
+ var external = Object.keys( require( './package.json' ).dependencies ).concat(
+   'path',
+--- a/rollup-plugin-node-globals/.babelrc
++++ b/rollup-plugin-node-globals/.babelrc
+@@ -1,3 +1,3 @@
+ {
+-  "presets": [["env", { "modules": false }]]
++  "presets": [["@babel/preset-env", { "modules": false }]]
+ }
+--- a/rollup-plugin-node-globals/test/index.js
++++ b/rollup-plugin-node-globals/test/index.js
+@@ -1,6 +1,6 @@
+ 
+ var rollup = require( 'rollup' );
+-var nodeResolve = require( 'rollup-plugin-node-resolve' );
++var nodeResolve = require( '@rollup/plugin-node-resolve' );
+ var globals = require( '../dist/rollup-plugin-node-globals.cjs' );
+ var path = require('path');
+ var vm = require('vm');

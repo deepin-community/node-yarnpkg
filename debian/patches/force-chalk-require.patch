@@ -1,0 +1,21 @@
+Force use of chalk cjs (v4) instead of chalk esm (v5)
+--- a/packages/yarnpkg-core/sources/formatUtils.ts
++++ b/packages/yarnpkg-core/sources/formatUtils.ts
+@@ -1,5 +1,5 @@
+ import {npath}                                                              from '@yarnpkg/fslib';
+-import chalk                                                                from 'chalk';
++import chalk                                                                from '/usr/share/nodejs/chalk/cjs/index.cjs';
+ import CI                                                                   from 'ci-info';
+ import {ColorFormat, formatMarkdownish}                                     from 'clipanion';
+ import micromatch                                                           from 'micromatch';
+--- a/packages/yarnpkg-shell/sources/index.ts
++++ b/packages/yarnpkg-shell/sources/index.ts
+@@ -1,7 +1,7 @@
+ import {PortablePath, npath, ppath, FakeFS, NodeFS}                                                         from '@yarnpkg/fslib';
+ import {Argument, ArgumentSegment, CommandChain, CommandLine, ShellLine, parseShell, stringifyCommandChain} from '@yarnpkg/parsers';
+ import {EnvSegment, ArithmeticExpression, ArithmeticPrimary}                                                from '@yarnpkg/parsers';
+-import chalk                                                                                                from 'chalk';
++import chalk                                                                                                from '/usr/share/nodejs/chalk/cjs/index.cjs';
+ import {homedir}                                                                                            from 'os';
+ import {PassThrough, Readable, Writable}                                                                    from 'stream';
+ import {setTimeout}                                                                                         from 'timers/promises';
