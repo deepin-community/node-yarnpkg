@@ -1,0 +1,19 @@
+Patch file for @yarnpkg/parsers
+1. Fix to use newer version of js-yaml
+--- a/packages/yarnpkg-parsers/sources/syml.ts
++++ b/packages/yarnpkg-parsers/sources/syml.ts
+@@ -1,4 +1,4 @@
+-import {safeLoad, FAILSAFE_SCHEMA} from 'js-yaml';
++import {load, FAILSAFE_SCHEMA} from 'js-yaml';
+ 
+ import {parse}                     from './grammars/syml';
+ 
+@@ -139,7 +139,7 @@
+   if (LEGACY_REGEXP.test(source))
+     return parseViaPeg(source);
+ 
+-  const value = safeLoad(source, {
++  const value = load(source, {
+     schema: FAILSAFE_SCHEMA,
+     json: true,
+   });

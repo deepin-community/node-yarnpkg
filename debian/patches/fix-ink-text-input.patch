@@ -1,0 +1,39 @@
+Patch file for component ink-text-input
+1. Copied contents from extended tsconfig file
+--- a/ink-text-input/tsconfig.json
++++ b/ink-text-input/tsconfig.json
+@@ -1,6 +1,33 @@
+ {
+-	"extends": "@sindresorhus/tsconfig",
+ 	"compilerOptions": {
++		"module": "node16",
++		"moduleResolution": "node16",
++		"moduleDetection": "force",
++		"target": "ES2020",
++		"lib": [
++			"DOM",
++			"DOM.Iterable",
++			"ES2020"
++		],
++		"allowSyntheticDefaultImports": true,
++		"resolveJsonModule": false,
++		"jsx": "react",
++		"declaration": true,
++		"pretty": true,
++		"newLine": "lf",
++		"stripInternal": true,
++		"strict": true,
++		"noImplicitReturns": true,
++		"noImplicitOverride": true,
++		"noUnusedLocals": true,
++		"noUnusedParameters": true,
++		"noFallthroughCasesInSwitch": true,
++		"noUncheckedIndexedAccess": true,
++		"noPropertyAccessFromIndexSignature": true,
++		"noEmitOnError": true,
++		"useDefineForClassFields": true,
++		"forceConsistentCasingInFileNames": true,
++		"skipLibCheck": true,
+ 		"outDir": "build",
+ 		"sourceMap": true
+ 	},

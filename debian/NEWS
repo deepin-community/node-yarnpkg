@@ -1,0 +1,10 @@
+node-yarnpkg (4.0.1+dfsg-2) experimental; urgency=medium
+
+    Note that yarnpkg from version 2.x.x and above now defaults to the Yarn
+    Plug'n'Play [1] install strategy which drops the use of the node_modules
+    folder. Please refer to the README.Debian file for ways to keep the old
+    behaviour.
+
+    1. https://yarnpkg.com/features/pnp
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Sun, 29 Oct 2023 20:40:59 +0100

@@ -1,0 +1,144 @@
+Fixed import names of lodash packages
+--- a/packages/plugin-constraints/sources/constraintUtils.ts
++++ b/packages/plugin-constraints/sources/constraintUtils.ts
+@@ -1,9 +1,9 @@
+ import {Configuration, formatUtils, Manifest, miscUtils, nodeUtils, Project, treeUtils, Workspace} from '@yarnpkg/core';
+ import {PortablePath}                                                                              from '@yarnpkg/fslib';
+-import get                                                                                         from 'lodash/get';
+-import set                                                                                         from 'lodash/set';
+-import toPath                                                                                      from 'lodash/toPath';
+-import unset                                                                                       from 'lodash/unset';
++import get                                                                                         from 'lodash.get';
++import set                                                                                         from 'lodash.set';
++import toPath                                                                                      from 'lodash.topath';
++import unset                                                                                       from 'lodash.unset';
+ 
+ export type ProcessResult = {
+   manifestUpdates: Map<PortablePath, Map<string, Map<any, Set<nodeUtils.Caller>>>>;
+--- a/packages/plugin-constraints/sources/tauModule.ts
++++ b/packages/plugin-constraints/sources/tauModule.ts
+@@ -2,7 +2,7 @@
+ 
+ import {Project, structUtils} from '@yarnpkg/core';
+ import {PortablePath}         from '@yarnpkg/fslib';
+-import getPath                from 'lodash/get';
++import getPath                from 'lodash.get';
+ import pl                     from 'tau-prolog';
+ import vm                     from 'vm';
+ 
+--- a/packages/plugin-essentials/sources/commands/config/get.ts
++++ b/packages/plugin-essentials/sources/commands/config/get.ts
+@@ -1,7 +1,7 @@
+ import {BaseCommand}                            from '@yarnpkg/cli';
+ import {Configuration, StreamReport, miscUtils} from '@yarnpkg/core';
+ import {Command, Option, Usage, UsageError}     from 'clipanion';
+-import getPath                                  from 'lodash/get';
++import getPath                                  from 'lodash.get';
+ import {inspect}                                from 'util';
+ 
+ // eslint-disable-next-line arca/no-default-export
+--- a/packages/plugin-essentials/sources/commands/config/set.ts
++++ b/packages/plugin-essentials/sources/commands/config/set.ts
+@@ -1,9 +1,9 @@
+ import {BaseCommand}                                         from '@yarnpkg/cli';
+ import {Configuration, StreamReport, MessageName, miscUtils} from '@yarnpkg/core';
+ import {Command, Option, Usage, UsageError}                  from 'clipanion';
+-import cloneDeep                                             from 'lodash/cloneDeep';
+-import getPath                                               from 'lodash/get';
+-import setPath                                               from 'lodash/set';
++import cloneDeep                                             from 'lodash.clonedeep';
++import getPath                                               from 'lodash.get';
++import setPath                                               from 'lodash.set';
+ import {inspect}                                             from 'util';
+ 
+ // eslint-disable-next-line arca/no-default-export
+--- a/packages/plugin-essentials/sources/commands/config/unset.ts
++++ b/packages/plugin-essentials/sources/commands/config/unset.ts
+@@ -1,9 +1,9 @@
+ import {BaseCommand}                              from '@yarnpkg/cli';
+ import {Configuration, StreamReport, MessageName} from '@yarnpkg/core';
+ import {Command, Option, Usage, UsageError}       from 'clipanion';
+-import cloneDeep                                  from 'lodash/cloneDeep';
+-import hasPath                                    from 'lodash/has';
+-import unsetPath                                  from 'lodash/unset';
++import cloneDeep                                  from 'lodash.clonedeep';
++import hasPath                                    from 'lodash.has';
++import unsetPath                                  from 'lodash.unset';
+ 
+ // eslint-disable-next-line arca/no-default-export
+ export default class ConfigUnsetCommand extends BaseCommand {
+--- a/packages/plugin-git/sources/gitUtils.ts
++++ b/packages/plugin-git/sources/gitUtils.ts
+@@ -2,7 +2,7 @@
+ import {Filename, npath, PortablePath, ppath, xfs}                                                                                                from '@yarnpkg/fslib';
+ import {UsageError}                                                                                                                               from 'clipanion';
+ import GitUrlParse                                                                                                                                from 'git-url-parse';
+-import capitalize                                                                                                                                 from 'lodash/capitalize';
++import capitalize                                                                                                                                 from 'lodash.capitalize';
+ import querystring                                                                                                                                from 'querystring';
+ import semver                                                                                                                                     from 'semver';
+ 
+--- a/packages/plugin-npm/sources/npmHttpUtils.ts
++++ b/packages/plugin-npm/sources/npmHttpUtils.ts
+@@ -2,7 +2,7 @@
+ import {MessageName, ReportError}                                                                                                 from '@yarnpkg/core';
+ import {Filename, PortablePath, ppath, xfs}                                                                                       from '@yarnpkg/fslib';
+ import {prompt}                                                                                                                   from 'enquirer';
+-import pick                                                                                                                       from 'lodash/pick';
++import pick                                                                                                                       from 'lodash.pick';
+ import semver                                                                                                                     from 'semver';
+ 
+ import {Hooks}                                                                                                                    from './index';
+--- a/packages/plugin-version/sources/versionUtils.ts
++++ b/packages/plugin-version/sources/versionUtils.ts
+@@ -3,7 +3,7 @@
+ import {parseSyml, stringifySyml}                                                                                                            from '@yarnpkg/parsers';
+ import {gitUtils}                                                                                                                            from '@yarnpkg/plugin-git';
+ import {UsageError}                                                                                                                          from 'clipanion';
+-import omit                                                                                                                                  from 'lodash/omit';
++import omit                                                                                                                                  from 'lodash.omit';
+ import semver                                                                                                                                from 'semver';
+ 
+ // Basically we only support auto-upgrading the ranges that are very simple (^x.y.z, ~x.y.z, >=x.y.z, and of course x.y.z)
+--- a/packages/yarnpkg-core/sources/Project.ts
++++ b/packages/yarnpkg-core/sources/Project.ts
+@@ -4,7 +4,7 @@
+ import {UsageError}                                                     from 'clipanion';
+ import {createHash}                                                     from 'crypto';
+ import {structuredPatch}                                                from 'diff';
+-import pick                                                             from 'lodash/pick';
++import pick                                                             from 'lodash.pick';
+ import pLimit                                                           from 'p-limit';
+ import semver                                                           from 'semver';
+ import internal                                                         from 'stream';
+--- a/packages/yarnpkg-core/sources/miscUtils.ts
++++ b/packages/yarnpkg-core/sources/miscUtils.ts
+@@ -1,7 +1,7 @@
+ import {PortablePath, npath, xfs} from '@yarnpkg/fslib';
+ import {UsageError}               from 'clipanion';
+-import isEqual                    from 'lodash/isEqual';
+-import mergeWith                  from 'lodash/mergeWith';
++import isEqual                    from 'lodash.isequal';
++import mergeWith                  from 'lodash.mergewith';
+ import micromatch                 from 'micromatch';
+ import pLimit, {Limit}            from 'p-limit';
+ import semver                     from 'semver';
+--- a/packages/yarnpkg-core/sources/Report.ts
++++ b/packages/yarnpkg-core/sources/Report.ts
+@@ -1,4 +1,4 @@
+-import throttle               from 'lodash/throttle';
++import throttle               from 'lodash.throttle';
+ import {PassThrough}          from 'stream';
+ import {StringDecoder}        from 'string_decoder';
+ 
+--- a/packages/yarnpkg-core/sources/scriptUtils.ts
++++ b/packages/yarnpkg-core/sources/scriptUtils.ts
+@@ -2,7 +2,7 @@
+ import {xfs, npath, ppath}                         from '@yarnpkg/fslib';
+ import {ZipOpenFS}                                 from '@yarnpkg/libzip';
+ import {execute}                                   from '@yarnpkg/shell';
+-import capitalize                                  from 'lodash/capitalize';
++import capitalize                                  from 'lodash.capitalize';
+ import pLimit                                      from 'p-limit';
+ import {PassThrough, Readable, Writable}           from 'stream';
+ 

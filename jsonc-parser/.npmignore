@@ -1,0 +1,13 @@
+.vscode/
+build/
+.github/
+lib/**/test/
+lib/**/*.map
+lib/*/*/*.d.ts
+src/
+test/
+.travis.yml
+.eslintrc
+.gitignore
+.mocharc.json
+.eslintrc.json

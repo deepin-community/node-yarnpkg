@@ -1,0 +1,1 @@
+FORCE_COLOR=true ava --timeout=1m

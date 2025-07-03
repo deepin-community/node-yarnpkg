@@ -1,0 +1,3 @@
+ln -s $(pwd) ../../node_modules/@yarnpkg/cli
+node ../../scripts/run-builder.js build bundle
+unlink ../../node_modules/@yarnpkg/cli

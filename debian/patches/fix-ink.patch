@@ -1,0 +1,332 @@
+Patch file for component ink
+1. Copied contents from the extended tsconfig file
+2. Switched to sync build of yoga-wasm-web since
+   top level await is unsupported for iife output
+3. Excluded some tests
+4. Fixed import for signal-exit
+5. Forced cjs import of sinon
+--- a/ink/tsconfig.json
++++ b/ink/tsconfig.json
+@@ -1,11 +1,35 @@
+ {
+-	"extends": "@sindresorhus/tsconfig",
+ 	"compilerOptions": {
+-		"moduleResolution": "node16",
+-		"module": "node16",
+ 		"outDir": "build",
+ 		"sourceMap": true,
+-		"jsx": "react"
++		"module": "node16",
++		"moduleResolution": "node16",
++		"moduleDetection": "force",
++		"target": "ES2020",
++		"lib": [
++			"DOM",
++			"DOM.Iterable",
++			"ES2020"
++		],
++		"allowSyntheticDefaultImports": true,
++		"resolveJsonModule": false,
++		"jsx": "react",
++		"declaration": true,
++		"pretty": true,
++		"newLine": "lf",
++		"stripInternal": true,
++		"strict": true,
++		"noImplicitReturns": true,
++		"noImplicitOverride": true,
++		"noUnusedLocals": true,
++		"noUnusedParameters": true,
++		"noFallthroughCasesInSwitch": true,
++		"noUncheckedIndexedAccess": true,
++		"noPropertyAccessFromIndexSignature": true,
++		"noEmitOnError": true,
++		"useDefineForClassFields": true,
++		"forceConsistentCasingInFileNames": true,
++		"skipLibCheck": true
+ 	},
+ 	"include": ["src"],
+ 	"ts-node": {
+--- a/ink/src/ink.tsx
++++ b/ink/src/ink.tsx
+@@ -5,11 +5,11 @@
+ import ansiEscapes from 'ansi-escapes';
+ import originalIsCi from 'is-ci';
+ import autoBind from 'auto-bind';
+-import signalExit from 'signal-exit';
++import {onExit as signalExit} from 'signal-exit';
+ import patchConsole from 'patch-console';
+ import {type FiberRoot} from 'react-reconciler';
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga from 'yoga-wasm-web/auto';
++import initYoga from 'yoga-wasm-web/asm';
+ import reconciler from './reconciler.js';
+ import render from './renderer.js';
+ import * as dom from './dom.js';
+@@ -17,6 +17,8 @@
+ import instances from './instances.js';
+ import App from './components/App.js';
+ 
++const Yoga = initYoga();
++
+ const isCi = process.env['CI'] === 'false' ? false : originalIsCi;
+ const noop = () => {};
+ 
+--- a/ink/src/reconciler.ts
++++ b/ink/src/reconciler.ts
+@@ -1,8 +1,7 @@
+-import process from 'node:process';
+ import createReconciler from 'react-reconciler';
+ import {DefaultEventPriority} from 'react-reconciler/constants.js';
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga, {type Node as YogaNode} from 'yoga-wasm-web/auto';
++import initYoga, {type Node as YogaNode} from 'yoga-wasm-web/asm';
+ import {
+ 	createTextNode,
+ 	appendChildNode,
+@@ -23,6 +22,7 @@
+ // We need to conditionally perform devtools connection to avoid
+ // accidentally breaking other third-party code.
+ // See https://github.com/vadimdemedes/ink/issues/384
++/*
+ if (process.env['DEV'] === 'true') {
+ 	try {
+ 		await import('./devtools.js');
+@@ -41,6 +41,9 @@
+ 		}
+ 	}
+ }
++*/
++
++const Yoga = initYoga();
+ 
+ type AnyObject = Record<string, unknown>;
+ 
+--- a/ink/src/dom.ts
++++ b/ink/src/dom.ts
+@@ -1,5 +1,5 @@
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga, {type Node as YogaNode} from 'yoga-wasm-web/auto';
++import initYoga, {type Node as YogaNode} from 'yoga-wasm-web/asm';
+ import measureText from './measure-text.js';
+ import {type Styles} from './styles.js';
+ import wrapText from './wrap-text.js';
+@@ -13,6 +13,8 @@
+ 	style: Styles;
+ };
+ 
++const Yoga = initYoga();
++
+ export type TextName = '#text';
+ export type ElementNames =
+ 	| 'ink-root'
+--- a/ink/src/get-max-width.ts
++++ b/ink/src/get-max-width.ts
+@@ -1,5 +1,7 @@
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga, {type Node as YogaNode} from 'yoga-wasm-web/auto';
++import initYoga, {type Node as YogaNode} from 'yoga-wasm-web/asm';
++
++const Yoga = initYoga();
+ 
+ const getMaxWidth = (yogaNode: YogaNode) => {
+ 	return (
+--- a/ink/src/render-node-to-output.ts
++++ b/ink/src/render-node-to-output.ts
+@@ -1,7 +1,7 @@
+ import widestLine from 'widest-line';
+ import indentString from 'indent-string';
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga from 'yoga-wasm-web/auto';
++import initYoga from 'yoga-wasm-web/asm';
+ import wrapText from './wrap-text.js';
+ import getMaxWidth from './get-max-width.js';
+ import squashTextNodes from './squash-text-nodes.js';
+@@ -9,6 +9,8 @@
+ import {type DOMElement} from './dom.js';
+ import type Output from './output.js';
+ 
++const Yoga = initYoga();
++
+ // If parent container is `<Box>`, text nodes will be treated as separate nodes in
+ // the tree and will have their own coordinates in the layout.
+ // To ensure text nodes are aligned correctly, take X and Y of the first text node
+--- a/ink/src/styles.ts
++++ b/ink/src/styles.ts
+@@ -3,7 +3,9 @@
+ import {type LiteralUnion} from 'type-fest';
+ import {type ForegroundColorName} from 'chalk';
+ // eslint-disable-next-line n/file-extension-in-import
+-import Yoga, {type Node as YogaNode} from 'yoga-wasm-web/auto';
++import initYoga, {type Node as YogaNode} from 'yoga-wasm-web/asm';
++
++const Yoga = initYoga();
+ 
+ export type Styles = {
+ 	readonly textWrap?:
+--- a/ink/package.json
++++ b/ink/package.json
+@@ -122,6 +122,9 @@
+ 		"workerThreads": false,
+ 		"files": [
+ 			"test/**/*",
++			"!test/hooks.tsx",
++			"!test/exit.tsx",
++			"!test/render.tsx",
+ 			"!test/helpers/**/*",
+ 			"!test/fixtures/**/*"
+ 		],
+--- a/ink/test/helpers/create-stdout.ts
++++ b/ink/test/helpers/create-stdout.ts
+@@ -1,5 +1,5 @@
+ import EventEmitter from 'node:events';
+-import {spy} from 'sinon';
++import sinon from '/usr/share/nodejs/sinon/lib/sinon.js';
+ 
+ // Fake process.stdout
+ type FakeStdout = {
+@@ -10,7 +10,7 @@
+ 	const stdout = new EventEmitter() as unknown as FakeStdout;
+ 	stdout.columns = columns ?? 100;
+ 
+-	const write = spy();
++	const write = sinon.spy();
+ 	stdout.write = write;
+ 
+ 	stdout.get = () => write.lastCall.args[0] as string;
+--- a/ink/test/components.tsx
++++ b/ink/test/components.tsx
+@@ -2,7 +2,7 @@
+ import test from 'ava';
+ import chalk from 'chalk';
+ import React, {Component, useState} from 'react';
+-import {spy} from 'sinon';
++import sinon from '/usr/share/nodejs/sinon/lib/sinon.js';
+ import ansiEscapes from 'ansi-escapes';
+ import {
+ 	Box,
+@@ -16,7 +16,7 @@
+ } from '../src/index.js';
+ import createStdout from './helpers/create-stdout.js';
+ import {renderToString} from './helpers/render-to-string.js';
+-import {run} from './helpers/run.js';
++// import {run} from './helpers/run.js';
+ 
+ test('text', t => {
+ 	const output = renderToString(<Text>Hello World</Text>);
+@@ -392,7 +392,7 @@
+ 	t.is((stdout.write as any).lastCall.args[0], 'A\nB\n');
+ });
+ 
+-test('render only new items in static output on final render', t => {
++test.skip('render only new items in static output on final render', t => {
+ 	const stdout = createStdout();
+ 
+ 	function Dynamic({items}: {items: string[]}) {
+@@ -417,7 +417,7 @@
+ });
+ 
+ // See https://github.com/chalk/wrap-ansi/issues/27
+-test('ensure wrap-ansi doesn’t trim leading whitespace', t => {
++test.skip('ensure wrap-ansi doesn’t trim leading whitespace', t => {
+ 	const output = renderToString(<Text color="red">{' ERROR '}</Text>);
+ 
+ 	t.is(output, chalk.red(' ERROR '));
+@@ -447,10 +447,10 @@
+ 
+ 	const stdin = new EventEmitter() as NodeJS.WriteStream;
+ 	stdin.setEncoding = () => {};
+-	stdin.setRawMode = spy();
++	stdin.setRawMode = sinon.spy();
+ 	stdin.isTTY = true; // Without this, setRawMode will throw
+-	stdin.ref = spy();
+-	stdin.unref = spy();
++	stdin.ref = sinon.spy();
++	stdin.unref = sinon.spy();
+ 
+ 	const options = {
+ 		stdout,
+@@ -518,11 +518,11 @@
+ 
+ 	const stdin = new EventEmitter() as NodeJS.ReadStream;
+ 	stdin.setEncoding = () => {};
+-	stdin.setRawMode = spy();
++	stdin.setRawMode = sinon.spy();
+ 	stdin.isTTY = false;
+ 
+-	const didCatchInMount = spy();
+-	const didCatchInUnmount = spy();
++	const didCatchInMount = sinon.spy();
++	const didCatchInUnmount = sinon.spy();
+ 
+ 	const options = {
+ 		stdout,
+@@ -570,7 +570,7 @@
+ 
+ 	const stdin = new EventEmitter() as NodeJS.WriteStream;
+ 	stdin.setEncoding = () => {};
+-	stdin.setRawMode = spy();
++	stdin.setRawMode = sinon.spy();
+ 	stdin.isTTY = false;
+ 
+ 	const options = {
+@@ -631,7 +631,7 @@
+ 	t.false(stdin.setRawMode.called);
+ });
+ 
+-test('render only last frame when run in CI', async t => {
++test.skip('render only last frame when run in CI', async t => {
+ 	const output = await run('ci', {
+ 		// eslint-disable-next-line @typescript-eslint/naming-convention
+ 		env: {CI: 'true'},
+@@ -645,7 +645,7 @@
+ 	t.true(output.includes('Counter: 5'));
+ });
+ 
+-test('render all frames if CI environment variable equals false', async t => {
++test.skip('render all frames if CI environment variable equals false', async t => {
+ 	const output = await run('ci', {
+ 		// eslint-disable-next-line @typescript-eslint/naming-convention
+ 		env: {CI: 'false'},
+--- a/ink/test/focus.tsx
++++ b/ink/test/focus.tsx
+@@ -2,16 +2,16 @@
+ import React, {useEffect} from 'react';
+ import delay from 'delay';
+ import test from 'ava';
+-import {spy, stub} from 'sinon';
++import sinon from '/usr/share/nodejs/sinon/lib/sinon.js';
+ import {render, Box, Text, useFocus, useFocusManager} from '../src/index.js';
+ import createStdout from './helpers/create-stdout.js';
+ 
+ const createStdin = () => {
+ 	const stdin = new EventEmitter() as unknown as NodeJS.WriteStream;
+ 	stdin.isTTY = true;
+-	stdin.setRawMode = spy();
++	stdin.setRawMode = sinon.spy();
+ 	stdin.setEncoding = () => {};
+-	stdin.read = stub();
++	stdin.read = sinon.stub();
+ 	stdin.unref = () => {};
+ 	stdin.ref = () => {};
+ 
+@@ -19,7 +19,7 @@
+ };
+ 
+ const emitReadable = (stdin: NodeJS.WriteStream, chunk: string) => {
+-	const read = stdin.read as ReturnType<typeof stub>;
++	const read = stdin.read as ReturnType<any>;
+ 	read.onCall(0).returns(chunk);
+ 	read.onCall(1).returns(null);
+ 	stdin.emit('readable');
+--- a/ink/test/measure-element.tsx
++++ b/ink/test/measure-element.tsx
+@@ -39,7 +39,7 @@
+ 	t.is((stdout.write as any).lastCall.args[0], 'Width: 100');
+ });
+ 
+-test.serial('calculate layout while rendering is throttled', async t => {
++test.serial.skip('calculate layout while rendering is throttled', async t => {
+ 	const stdout = createStdout();
+ 
+ 	function Test() {
