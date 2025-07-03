@@ -1,1 +1,1 @@
-usr/share/nodejs/yarn/bin/yarn.js usr/bin/yarnpkg
+usr/share/nodejs/@yarnpkg/cli/bundles/yarn.js usr/bin/yarnpkg

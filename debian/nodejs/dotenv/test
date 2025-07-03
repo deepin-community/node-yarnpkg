@@ -1,0 +1,2 @@
+# tests/test-config-cli.js is flaky and is excluded
+tap tests/test-cli-options.js tests/test-config-vault.js tests/test-parse.js tests/test-decrypt.js tests/test-parse-multiline.js tests/test-config.js tests/test-env-options.js tests/test-populate.js --100 -Rspec

@@ -1,3 +1,170 @@
+node-yarnpkg (4.1.0+dfsg-1) unstable; urgency=medium
+
+  * New upstream version 4.1.0+dfsg
+    All components being kept at the same version,
+    except for zlib-ng 2.2.4. Closes: #1084310.
+  * Drop memory-init-file option in yoga*
+  * Fix compilation flag for libzip
+
+  [ Yadd ]
+  * Add hardening
+
+ -- Jérémy Lal <kapouer@melix.org>  Thu, 10 Apr 2025 13:33:10 +0200
+
+node-yarnpkg (4.0.2+dfsg-3) unstable; urgency=medium
+
+  * Team upload
+
+  [ Yadd ]
+  * Try to render build reproducible
+  * Fix @yarnpkg/builder/lib/cli.js permission
+  * Unfuzz patches
+  * Fix debian/watch
+
+  [ Zixing Liu ]
+  * Fix error "unsupported size of off_t" (Closes: #1067283)
+
+ -- Yadd <yadd@debian.org>  Sun, 01 Sep 2024 12:19:48 +0400
+
+node-yarnpkg (4.0.2+dfsg-2) unstable; urgency=medium
+
+  * Team upload
+  * Upload to unstable
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Thu, 21 Dec 2023 22:10:51 +0100
+
+node-yarnpkg (4.0.2+dfsg-1) experimental; urgency=medium
+
+  * Team upload
+  * Update README.Debian
+  * New upstream version 4.0.2+dfsg
+  * Build @yarnpkg/* packages
+  * Install @yarnpkg/* packages and others
+  * Update d/clean
+  * Update d/control
+  * Add require tests
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Sun, 10 Dec 2023 12:52:51 +0100
+
+node-yarnpkg (4.0.1+dfsg-2) experimental; urgency=medium
+
+  * Team upload
+  * Disable flaky tests
+  * Add debian/NEWS and debian/README.Debian
+  * Add caveat to package description
+  * Update uploaders field
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Sun, 29 Oct 2023 20:45:59 +0100
+
+node-yarnpkg (4.0.1+dfsg-1) experimental; urgency=medium
+
+  * Team upload
+  * New upstream version 4.0.1+dfsg
+  * Update version in manpage
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Sun, 29 Oct 2023 09:02:54 +0100
+
+node-yarnpkg (4.0.0-rc.53+dfsg-1) experimental; urgency=medium
+
+  * Team upload
+  * Embed many components
+  * New upstream version 4.0.0-rc.53+dfsg (Closes: #958686, #977667, #981919, #940704, #1000582, #1002902, #980316, #993566)
+  * Remove old patches
+  * Setup build
+  * Add build_modules
+  * Add test_modules
+  * Add new patches
+  * Clean build artifacts
+  * Remove old files
+  * Install docs and fix perms
+  * Update upstream metadata
+  * Update lintian overrides
+  * Fix autopkgtest
+  * Update links
+  * Add manpage
+  * Update description and dependencies
+
+ -- Israel Galadima <izzygaladima@gmail.com>  Fri, 13 Oct 2023 09:42:42 +0100
+
+node-yarnpkg (1.22.19+~cs24.27.18-4) unstable; urgency=medium
+
+  [ Konstantin Demin ]
+  * Update commander patch
+
+ -- Yadd <yadd@debian.org>  Sat, 16 Sep 2023 18:35:12 +0400
+
+node-yarnpkg (1.22.19+~cs24.27.18-3) unstable; urgency=medium
+
+  * Team upload
+
+  [ Konstantin Demin ]
+  * Update commander patch
+
+  [ Yadd ]
+  * Update lintian override info format in d/source/lintian-overrides
+    on line 2-3, 5-8
+  * Update standards version to 4.6.2, no changes needed
+
+ -- Yadd <yadd@debian.org>  Wed, 13 Sep 2023 13:22:27 +0400
+
+node-yarnpkg (1.22.19+~cs24.27.18-2) unstable; urgency=medium
+
+  * Team upload
+  * Update commander patch (Closes: #1019291)
+
+ -- Yadd <yadd@debian.org>  Mon, 14 Nov 2022 05:22:50 +0100
+
+node-yarnpkg (1.22.19+~cs24.27.18-1) unstable; urgency=medium
+
+  * Team upload
+
+  [ Yadd ]
+  * Declare compliance with policy 4.6.1
+  * New upstream version 1.22.19+~cs24.27.18
+
+  [ Pirate Praveen ]
+  * Drop build dependency on node-gulp-util (unused)
+
+ -- Pirate Praveen <praveen@debian.org>  Thu, 12 May 2022 23:09:24 +0530
+
+node-yarnpkg (1.22.10+~cs22.25.14-9) unstable; urgency=medium
+
+  * Team upload
+  * Drop useless build dependency to node-babel-eslint
+
+ -- Yadd <yadd@debian.org>  Thu, 17 Mar 2022 08:19:36 +0100
+
+node-yarnpkg (1.22.10+~cs22.25.14-8) unstable; urgency=medium
+
+  * Team upload
+  * Fix autopkgtest using socat
+
+ -- Yadd <yadd@debian.org>  Sun, 06 Feb 2022 15:28:07 +0100
+
+node-yarnpkg (1.22.10+~cs22.25.14-7) unstable; urgency=medium
+
+  * Team upload
+  * Back to unstable
+
+ -- Yadd <yadd@debian.org>  Sun, 06 Feb 2022 15:02:21 +0100
+
+node-yarnpkg (1.22.10+~cs22.25.14-6) experimental; urgency=medium
+
+  * Team upload
+  * Add fix for node-commander ≥ 7
+
+ -- Yadd <yadd@debian.org>  Mon, 03 Jan 2022 12:19:19 +0100
+
+node-yarnpkg (1.22.10+~cs22.25.14-5) unstable; urgency=medium
+
+  * Team upload
+  * Fix filenamemangle
+  * Update nodejs dependency to nodejs:any
+  * Add yarnpkg --version test (#1001532)
+  * Add fix for node-js-yaml ≥ 4
+
+ -- Yadd <yadd@debian.org>  Thu, 16 Dec 2021 11:05:43 +0100
+
 node-yarnpkg (1.22.10+~cs22.25.14-4) unstable; urgency=medium
 
   * Team upload

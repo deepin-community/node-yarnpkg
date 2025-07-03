@@ -1,0 +1,50 @@
+Patch file for component arcanis-libzip
+1. Removed some files from the cmake build
+   which were excluded from the upstream tar-
+   ball
+--- a/arcanis-libzip/CMakeLists.txt
++++ b/arcanis-libzip/CMakeLists.txt
+@@ -315,23 +315,10 @@
+ # Targets
+ ADD_SUBDIRECTORY(lib)
+ 
+-IF(BUILD_DOC)
+-ADD_SUBDIRECTORY(man)
+-ENDIF()
+-
+ IF(BUILD_TOOLS)
+ ADD_SUBDIRECTORY(src)
+ ENDIF()
+ 
+-IF(BUILD_REGRESS)
+-ADD_SUBDIRECTORY(regress)
+-ENDIF()
+-
+-IF(BUILD_EXAMPLES)
+-ADD_SUBDIRECTORY(examples)
+-ENDIF()
+-
+-
+ # pkgconfig file
+ SET(prefix ${CMAKE_INSTALL_PREFIX})
+ SET(exec_prefix \${prefix})
+@@ -446,19 +433,6 @@
+ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/cmake-config.h.in ${CMAKE_CURRENT_BINARY_DIR}/config.h)
+ CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/cmake-zipconf.h.in ${CMAKE_CURRENT_BINARY_DIR}/zipconf.h)
+ 
+-# for tests
+-
+-SET(srcdir ${CMAKE_CURRENT_SOURCE_DIR}/regress)
+-SET(abs_srcdir ${CMAKE_CURRENT_SOURCE_DIR}/regress)
+-SET(top_builddir ${CMAKE_CURRENT_BINARY_DIR}) # used to find config.h
+-
+-CONFIGURE_FILE(regress/runtest.in ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/runtest @ONLY)
+-FILE(COPY ${CMAKE_CURRENT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/runtest
+-  DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/regress
+-  FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE
+-)
+-
+-
+ # installation
+ 
+ INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/zipconf.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})

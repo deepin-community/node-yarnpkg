@@ -1,0 +1,216 @@
+Patch file for component yoga-wasm-web
+1. Stop using closure compiler in emscripten (Debian
+   version is too old)
+2. Removed dependency on unpackaged rollup plugin
+3. Replcaed vitest with jest in tests
+--- a/yoga-wasm-web/rollup.config.js
++++ b/yoga-wasm-web/rollup.config.js
+@@ -1,5 +1,4 @@
+ import { copyFile, readFile, writeFile, mkdir } from "node:fs/promises";
+-import { minify, defineRollupSwcMinifyOption } from "rollup-plugin-swc3";
+ import commonjs from "@rollup/plugin-commonjs";
+ import nodeResolve from "@rollup/plugin-node-resolve";
+ 
+@@ -31,11 +30,13 @@
+       commonjs({
+         esmExternals: true,
+       }),
++      /*
+       minify(
+         defineRollupSwcMinifyOption({
+           compress: { passes: 2 },
+         })
+       ),
++      */
+     ],
+   },
+ ];
+--- a/yoga-wasm-web/test/basic.test.ts
++++ b/yoga-wasm-web/test/basic.test.ts
+@@ -1,4 +1,4 @@
+-import { it, describe, expect } from "vitest";
++import { it, describe, expect } from "@jest/globals";
+ import { Yoga } from "./init.js";
+ 
+ describe("basic", () => {
+@@ -21,19 +21,19 @@
+     root.insertChild(node2, 1);
+ 
+     root.calculateLayout(500, 500);
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       top: 0,
+       width: 500,
+       height: 500,
+     });
+ 
+-    expect(node1.getComputedLayout()).toContain({
++    expect(node1.getComputedLayout()).toMatchObject({
+       top: 150,
+       width: 100,
+       height: 100,
+     });
+ 
+-    expect(node2.getComputedLayout()).toContain({
++    expect(node2.getComputedLayout()).toMatchObject({
+       top: 250,
+       width: 100,
+       height: 100,
+--- a/yoga-wasm-web/test/defaults.test.ts
++++ b/yoga-wasm-web/test/defaults.test.ts
+@@ -1,4 +1,4 @@
+-import { it, describe, expect } from "vitest";
++import { it, describe, expect } from "@jest/globals";
+ import process from "node:process";
+ import { Yoga } from "./init.js";
+ 
+--- a/yoga-wasm-web/test/measureCallback.test.ts
++++ b/yoga-wasm-web/test/measureCallback.test.ts
+@@ -1,9 +1,9 @@
+-import { vi, it, describe, expect } from "vitest";
++import { jest, it, describe, expect } from "@jest/globals";
+ import { Yoga } from "./init.js";
+ 
+ describe("measureCallback", () => {
+   it("should be called when it is provided", async () => {
+-    const callback = vi.fn(() => ({ width: 100, height: 100 }));
++    const callback = jest.fn(() => ({ width: 100, height: 100 }));
+ 
+     const root = Yoga.Node.create();
+     const node = Yoga.Node.create();
+@@ -14,14 +14,14 @@
+     root.calculateLayout();
+ 
+     expect(callback).toHaveBeenCalled();
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       width: 100,
+       height: 100,
+     });
+   });
+ 
+   it("should have 4 args", async () => {
+-    const callback = vi.fn(() => ({ width: 100, height: 100 }));
++    const callback = jest.fn(() => ({ width: 100, height: 100 }));
+ 
+     const root = Yoga.Node.create();
+     const node = Yoga.Node.create();
+@@ -31,7 +31,7 @@
+ 
+     root.calculateLayout(100, 100);
+ 
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       width: 100,
+       height: 100,
+     });
+@@ -46,7 +46,7 @@
+   });
+ 
+   it("should work when empty object is returned", async () => {
+-    const callback = vi.fn(() => ({}));
++    const callback = jest.fn(() => ({}));
+ 
+     const root = Yoga.Node.create();
+     const node = Yoga.Node.create();
+@@ -57,14 +57,14 @@
+ 
+     root.calculateLayout(10, 10);
+     expect(callback).toHaveBeenCalled();
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       width: 10,
+       height: 10,
+     });
+   });
+ 
+   it("should work when only width is provided", async () => {
+-    const callback = vi.fn(() => ({ width: 10 }));
++    const callback = jest.fn(() => ({ width: 10 }));
+ 
+     const root = Yoga.Node.create();
+     const node = Yoga.Node.create();
+@@ -75,14 +75,14 @@
+ 
+     root.calculateLayout(10, 10);
+     expect(callback).toHaveBeenCalled();
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       width: 10,
+       height: 10,
+     });
+   });
+ 
+   it("should work when only height is provided", async () => {
+-    const callback = vi.fn(() => ({ height: 10 }));
++    const callback = jest.fn(() => ({ height: 10 }));
+ 
+     const root = Yoga.Node.create();
+     const node = Yoga.Node.create();
+@@ -93,7 +93,7 @@
+ 
+     root.calculateLayout(10, 10);
+     expect(callback).toHaveBeenCalled();
+-    expect(root.getComputedLayout()).toContain({
++    expect(root.getComputedLayout()).toMatchObject({
+       width: 10,
+       height: 10,
+     });
+--- a/yoga-wasm-web/tsconfig.json
++++ b/yoga-wasm-web/tsconfig.json
+@@ -4,7 +4,9 @@
+     "moduleResolution": "node",
+     "module": "ES2022",
+     "target": "ES2022",
+-    "strict": true
++    "strict": true,
++    "skipLibCheck": true
+   },
+-  "include": ["./test/*"]
++  "include": ["./test/*"],
++  "exclude": ["./test/types.test.ts"]
+ }
+--- a/yoga-wasm-web/Makefile
++++ b/yoga-wasm-web/Makefile
+@@ -13,10 +13,8 @@
+ 		-fno-exceptions \
+ 		-fno-rtti \
+ 		-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 \
+-		--closure 1 \
+ 		-s WASM=1 \
+ 		-s WASM_ASYNC_COMPILATION=1 \
+-		-s USE_CLOSURE_COMPILER=1 \
+ 		-s USE_ES6_IMPORT_META=0 \
+ 		-s ASSERTIONS=0 \
+ 		-s ALLOW_MEMORY_GROWTH=1 \
+@@ -42,11 +40,8 @@
+ 		-fno-exceptions \
+ 		-fno-rtti \
+ 		-DEMSCRIPTEN_HAS_UNBOUND_TYPE_NAMES=0 \
+-		--closure 1 \
+-		--memory-init-file 0 \
+ 		-s WASM=0 \
+ 		-s WASM_ASYNC_COMPILATION=0 \
+-		-s USE_CLOSURE_COMPILER=1 \
+ 		-s USE_ES6_IMPORT_META=0 \
+ 		-s ASSERTIONS=0 \
+ 		-s ALLOW_MEMORY_GROWTH=1 \
+@@ -61,7 +56,7 @@
+ 		-o tmp/yoga-asm.mjs
+ 
+ clean:
+-	rm -rf tmp 
++	rm -rf tmp
+ 
+ dir:
+ 	mkdir -p tmp
+--- a/yoga/javascript/CMakeLists.txt
++++ b/yoga/javascript/CMakeLists.txt
+@@ -32,7 +32,6 @@
+ add_link_options(
+     ${COMPILE_OPTIONS}
+     --closure 1
+-    --memory-init-file 0
+     --no-entry
+     "SHELL:-s ALLOW_MEMORY_GROWTH=1"
+     "SHELL:-s ASSERTIONS=0"

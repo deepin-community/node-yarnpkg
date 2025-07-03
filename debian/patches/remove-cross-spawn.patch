@@ -1,0 +1,47 @@
+Replaced cross-spawn with spawn from node:child_process
+--- a/packages/yarnpkg-core/sources/execUtils.ts
++++ b/packages/yarnpkg-core/sources/execUtils.ts
+@@ -1,6 +1,5 @@
+ import {PortablePath, npath, ppath, BufferEncodingOrBuffer} from '@yarnpkg/fslib';
+-import {ChildProcess}                                       from 'child_process';
+-import crossSpawn                                           from 'cross-spawn';
++import {ChildProcess, spawn}                                from 'child_process';
+ import {Readable, Writable}                                 from 'stream';
+ 
+ import {Configuration}                                      from './Configuration';
+@@ -96,7 +95,7 @@
+   if (hasFd(stderr))
+     stdio[2] = stderr;
+ 
+-  const child = crossSpawn(fileName, args, {
++  const child = spawn(fileName, args, {
+     cwd: npath.fromPortablePath(cwd),
+     env: {
+       ...env,
+@@ -185,7 +184,7 @@
+   if (typeof env.PWD !== `undefined`)
+     env = {...env, PWD: nativeCwd};
+ 
+-  const subprocess = crossSpawn(fileName, args, {
++  const subprocess = spawn(fileName, args, {
+     cwd: nativeCwd,
+     env,
+     stdio,
+--- a/packages/yarnpkg-shell/sources/pipe.ts
++++ b/packages/yarnpkg-shell/sources/pipe.ts
+@@ -1,5 +1,4 @@
+-import {ChildProcess}                               from 'child_process';
+-import crossSpawn                                   from 'cross-spawn';
++import {ChildProcess, spawn}                               from 'child_process';
+ import {PassThrough, Readable, Transform, Writable} from 'stream';
+ import {StringDecoder}                              from 'string_decoder';
+ 
+@@ -52,7 +51,7 @@
+       ? `pipe`
+       : stdio[2];
+ 
+-    const child = crossSpawn(name, args, {...spawnOpts, stdio: [
++    const child = spawn(name, args, {...spawnOpts, stdio: [
+       stdin,
+       stdout,
+       stderr,

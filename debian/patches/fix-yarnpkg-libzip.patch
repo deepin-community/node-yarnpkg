@@ -1,0 +1,158 @@
+Patch file for @yarnpkg/libzip
+1. Stop using docker
+2. Use local copy of zlib-ng and @arcanis/libzip
+   instead of downloading from internet
+--- a/packages/yarnpkg-libzip/artifacts/build.sh
++++ b/packages/yarnpkg-libzip/artifacts/build.sh
+@@ -17,33 +17,15 @@
+ LIBZIP_ROOT="$THIS_DIR/libzip-$LIBZIP_VERSION"
+ 
+ [[ -f "$ZLIB_ROOT/build/libz.a" ]] || (
+-  if ! [[ -e zlib-"$ZLIB_VERSION".zip ]]; then
+-    wget -O ./zlib-"$ZLIB_VERSION".zip "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/$ZLIB_VERSION.zip"
+-  fi
+-
+-  if ! [[ -e "$ZLIB_ROOT" ]]; then
+-    unzip ./zlib-"$ZLIB_VERSION".zip
+-  fi
++  ln -s ../../../zlib-ng ./zlib-ng-"$ZLIB_VERSION"
++  cd zlib-ng-"$ZLIB_VERSION"
+ 
+   mkdir -p "$ZLIB_ROOT/build"
++  cd "$ZLIB_ROOT/build"
+ 
+-  docker run --rm \
+-    -v "$ZLIB_ROOT:/zlib" \
+-    -u $(id -u):$(id -g) \
+-    --env CHOST="wasm32" \
+-    --env CFLAGS="-O3" \
+-    -w "/zlib/build" \
+-    emscripten/emsdk:$EMSDK_VERSION \
+-    emconfigure ../configure --warn --zlib-compat --static
+-
+-  docker run --rm \
+-    -v "$ZLIB_ROOT:/zlib" \
+-    -u $(id -u):$(id -g) \
+-    -w "/zlib/build" \
+-    emscripten/emsdk:$EMSDK_VERSION \
+-    emmake make -j2
++  CHOST="wasm32" CFLAGS="-O3" emconfigure ../configure --warn --zlib-compat --static
++  emmake make -j2
+ 
+-  cd "$ZLIB_ROOT/build"
+   mkdir -p local/lib local/include
+   cp libz.a local/lib/
+   cp zconf.h zlib.h zlib_name_mangling.h local/include/
+@@ -52,34 +34,13 @@
+ )
+ 
+ [[ -f "$LIBZIP_ROOT/build/lib/libzip.a" ]] || (
+-  if [[ -n "$LIBZIP_REPO" ]]; then
+-    if ! [[ -e libzip-"$LIBZIP_VERSION" ]]; then
+-      git clone https://github.com/"$LIBZIP_REPO" libzip-"$LIBZIP_VERSION"
+-
+-      cd libzip-"$LIBZIP_VERSION"
+-      git checkout "$LIBZIP_COMMIT"
+-      cd ..
+-    fi
+-  else
+-    if ! [[ -e libzip-"$LIBZIP_VERSION".tar.gz ]]; then
+-      wget -O ./libzip-"$LIBZIP_VERSION".tar.gz "https://libzip.org/download/libzip-$LIBZIP_VERSION.tar.gz"
+-    fi
+-
+-    if ! [[ -e libzip-"$LIBZIP_VERSION" ]]; then
+-      tar xvf ./libzip-"$LIBZIP_VERSION".tar.gz
+-    fi
+-  fi
++  ln -s ../../../arcanis-libzip ./libzip-"$LIBZIP_VERSION"
++  cd libzip-"$LIBZIP_VERSION"
+ 
+   mkdir -p "$LIBZIP_ROOT/build"
++  cd "$LIBZIP_ROOT/build"
+ 
+-  docker run --rm \
+-    -v "$LIBZIP_ROOT:/libzip" \
+-    -v "$ZLIB_ROOT:/zlib" \
+-    -u $(id -u):$(id -g) \
+-    -w "/libzip/build" \
+-    --env CFLAGS="-O3" \
+-    emscripten/emsdk:$EMSDK_VERSION \
+-    emcmake cmake -Wno-dev \
++  CFLAGS="-O3" emcmake cmake -Wno-dev \
+     -DBUILD_SHARED_LIBS=OFF \
+     -DENABLE_LOCALTIME=OFF \
+     -DENABLE_COMMONCRYPTO=OFF \
+@@ -87,19 +48,13 @@
+     -DENABLE_MBEDTLS=OFF \
+     -DENABLE_OPENSSL=OFF \
+     -DENABLE_WINDOWS_CRYPTO=OFF \
+-    -DZLIB_LIBRARY=/zlib/build/local/lib/libz.a \
+-    -DZLIB_INCLUDE_DIR=/zlib/build/local/include \
++    -DZLIB_LIBRARY="$ZLIB_ROOT/build/local/lib/libz.a" \
++    -DZLIB_INCLUDE_DIR="$ZLIB_ROOT/build/local/include" \
++    -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/node" \
+     ..
+ 
+-  docker run --rm \
+-    -v "$LIBZIP_ROOT:/libzip" \
+-    -v "$ZLIB_ROOT:/zlib" \
+-    -u $(id -u):$(id -g) \
+-    -w "/libzip/build" \
+-    emscripten/emsdk:$EMSDK_VERSION \
+-    emmake make zip
++  emmake make zip
+ 
+-  cd "$LIBZIP_ROOT/build"
+   mkdir -p local/lib local/include
+   cp lib/libzip.a local/lib/
+   cp config.h zipconf.h ../lib/zip.h ../lib/compat.h ../lib/zipint.h local/include/
+@@ -112,18 +67,11 @@
+   shift
+ 
+   # Options are documented at https://github.com/emscripten-core/emscripten/blob/86131037aa4f1c7bf6021081dd28fae12bdedba1/src/settings.js
+-  docker run --rm \
+-    -v "$THIS_DIR:/src" \
+-    -v "$LIBZIP_ROOT:/libzip" \
+-    -v "$ZLIB_ROOT:/zlib" \
+-    -u $(id -u):$(id -g) \
+-    -w "/src" \
+-    emscripten/emsdk:$EMSDK_VERSION \
+-    emcc \
++  emcc \
+     -o ./$name.js \
+     -s WASM=1 \
+     -s EXPORTED_FUNCTIONS="$(cat ./exported.json)" \
+-    -s EXPORTED_RUNTIME_METHODS='["cwrap", "getValue"]' \
++    -s EXPORTED_RUNTIME_METHODS='["cwrap", "getValue", "HEAPU8"]' \
+     -s ALLOW_MEMORY_GROWTH=1 \
+     -s SUPPORT_BIG_ENDIAN=1 \
+     -s TEXTDECODER=2 \
+@@ -136,12 +84,12 @@
+     -s NODEJS_CATCH_EXIT=0 \
+     -s NODEJS_CATCH_REJECTION=0 \
+     "$@" \
+-    -I/libzip/build/local/include \
+-    -I/zlib/build/local/include \
++    -I"$LIBZIP_ROOT/build/local/include" \
++    -I"$ZLIB_ROOT/build/local/include" \
+     -O3 \
+     ./lib/*.c \
+-    /libzip/build/local/lib/libzip.a \
+-    /zlib/build/local/lib/libz.a
++    "$LIBZIP_ROOT/build/local/lib/libzip.a" \
++    "$ZLIB_ROOT/build/local/lib/libz.a"
+ 
+   cat >../sources/"$name".js \
+     <(echo "var frozenFs = Object.assign({}, require('fs'));") \
+@@ -151,8 +99,9 @@
+   echo "Built wasm ($name)"
+ }
+ 
++cd "$THIS_DIR"
+ build libzipSync -s WASM_ASYNC_COMPILATION=0 &
+ build libzipAsync -s WASM_ASYNC_COMPILATION=1 &
+ wait
+-
+-yarn prettier --write ../sources/*.js
++unlink ./zlib-ng-"$ZLIB_VERSION"
++unlink ./libzip-"$LIBZIP_VERSION"

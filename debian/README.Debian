@@ -1,17 +1,21 @@
 yarnpkg for Debian
 ------------------
-Note that this package launches external commands with child_process.exec
-which spawns a shell then executes the command within that shell, rather than
-with the more efficient and more secure child_process.execFile which does not
-spawn a shell, and spawns the specified executable file directly as a new
-process.
+Note that yarnpkg from version 2.x.x and above now defaults to the Yarn
+Plug'n'Play [1] install strategy which drops the use of the node_modules
+folder.
 
-This also means that it needs node-puka to sanitize the string passed to
-child_process.exec.
+If you would like to keep the old behaviour, you can:
+  - Run this command in your project root folder, which changes the install
+    strategy from Yarn Plug'n'Play to node-modules.
+    ```bash
+    if ! grep nodeLinker .yarnrc.yml >/dev/null;
+    then
+      echo "nodeLinker: \"node-modules\"" >>.yarnrc.yml; 
+    fi
+    ```
+  - Stick with yarnpkg version 1.x.x via the `corepack yarn` command from
+    the node-corepack package.
 
-Also see:
-- https://bugs.debian.org/886849
-- http://bonedaddy.net/pabs3/log/2014/02/17/pid-preservation-society/
-- https://github.com/yarnpkg/yarn/issues/5208
+1. https://yarnpkg.com/features/pnp
 
- -- Paolo Greppi <paolo.greppi@libpf.com>  Sat, 07 Apr 2018 15:38:31 +0200
+ -- Israel Galadima <izzygaladima@gmail.com>  Sun, 29 Oct 2023 20:40:59 +0100

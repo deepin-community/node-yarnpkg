@@ -1,76 +1,122 @@
+# yoga: should be manually downloaded at commit c09405d58c624fd26d5e0a7ed98bd10c5cc4c05b
+# arcanis-libzip: should be manually downloaded at commit 664462465d2730d51f04437c90ed7ebcbe19a36f
+# tinylogic: the downloaded tarball follows this naming pattern node-yarnpkg-tinylogic-git%Y%m%d.tar.xz
+
 version=4
+opts="mode=git,pgpmode=none,repack,repacksuffix=+dfsg,dversionmangle=auto" \
+ https://github.com/yarnpkg/berry.git refs/tags/@yarnpkg/cli/@ANY_VERSION@
 
 opts=\
+component=dotenv,\
+ctype=nodejs,\
 dversionmangle=auto,\
-filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-yarn-$1.tar.gz/ \
- https://github.com/yarnpkg/yarn/tags .*/archive/.*/v?([\d\.]+).tar.gz group
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-dotenv-$1/ \
+ https://github.com/motdotla/dotenv/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-opts="searchmode=plain,ctype=nodejs,component=dnscache,pgpmode=none" \
- https://registry.npmjs.org/dnscache \
- https://registry.npmjs.org/dnscache/-/dnscache-(1[\d\.]+)@ARCHIVE_EXT@ checksum
-
-opts="searchmode=plain,ctype=nodejs,component=gunzip-maybe,pgpmode=none" \
- https://registry.npmjs.org/gunzip-maybe \
- https://registry.npmjs.org/gunzip-maybe/-/gunzip-maybe-(1[\d\.]+)@ARCHIVE_EXT@ checksum
-
-opts="searchmode=plain,ctype=nodejs,component=hash-for-dep,pgpmode=none" \
- https://registry.npmjs.org/hash-for-dep \
- https://registry.npmjs.org/hash-for-dep/-/hash-for-dep-(1[\d\.]+)@ARCHIVE_EXT@ checksum
-
-opts="searchmode=plain,ctype=nodejs,component=normalize-url,pgpmode=none" \
- https://registry.npmjs.org/normalize-url \
- https://registry.npmjs.org/normalize-url/-/normalize-url-(2[\d\.]+)@ARCHIVE_EXT@ checksum
-
-opts="searchmode=plain,ctype=nodejs,component=npm-logical-tree,pgpmode=none" \
- https://registry.npmjs.org/npm-logical-tree \
- https://registry.npmjs.org/npm-logical-tree/-/npm-logical-tree-(1[\d\.]+)@ARCHIVE_EXT@ checkum
-
-opts="searchmode=plain,ctype=nodejs,component=string-replace-loader,pgpmode=none" \
- https://registry.npmjs.org/string-replace-loader \
- https://registry.npmjs.org/string-replace-loader/-/string-replace-loader-(2[\d\.]+)@ARCHIVE_EXT@ checksum
-
-# we cannot use ctype=nodejs here as we need a newer version than mentioned package.json
-opts="searchmode=plain,pgpmode=none,component=tar-fs" \
- https://registry.npmjs.org/tar-fs \
- https://registry.npmjs.org/tar-fs/-/tar-fs-(2(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
-
-opts="searchmode=plain,ctype=nodejs,component=v8-compile-cache,pgpmode=none,\
-" \
- https://registry.npmjs.org/v8-compile-cache \
- https://registry.npmjs.org/v8-compile-cache/-/v8-compile-cache-([\d\.]+)@ARCHIVE_EXT@ checksum
+opts="mode=git,pgpmode=none,component=tinylogic,ctype=nodejs,dversionmangle=auto,pretty=tinylogic-git%cd" \
+ https://github.com/arcanis/tinylogic.git HEAD ignore
 
 opts=\
-component=mkdirp-classic,\
+component=tau-prolog,\
+ctype=nodejs,\
 dversionmangle=auto,\
-filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-mkdirp-classic-$1.tar.gz/ \
- https://github.com/mafintosh/mkdirp-classic/tags .*/archive/.*/v?([\d\.]+).tar.gz checksum
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-tau-prolog-$1/ \
+ https://github.com/tau-prolog/tau-prolog/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# dependency of another component, normalize-url so ctype=nodejs won't work
-opts="searchmode=plain,pgpmode=none,component=query-string" \
- https://registry.npmjs.org/query-string \
- https://registry.npmjs.org/query-string/-/query-string-(5(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+opts=\
+component=readline-sync,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-readline-sync-$1/ \
+ https://github.com/anseki/readline-sync/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# dependency of another component, gunzip-maybe so ctype=nodejs won't work
-opts="searchmode=plain,pgpmode=none,component=is-deflate" \
- https://registry.npmjs.org/is-deflate \
- https://registry.npmjs.org/is-deflate/-/is-deflate-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+opts=\
+component=parse-url,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-parse-url-$1/ \
+ https://github.com/IonicaBizau/parse-url/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# dependency of another component, gunzip-maybe so ctype=nodejs won't work
-opts="searchmode=plain,pgpmode=none,component=is-gzip" \
- https://registry.npmjs.org/is-gzip \
- https://registry.npmjs.org/is-gzip/-/is-gzip-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+opts=\
+component=algoliasearch-client-javascript,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-algoliasearch-client-javascript-$1/ \
+ https://github.com/algolia/algoliasearch-client-javascript/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# dependency of another component, gunzip-maybe so ctype=nodejs won't work
-opts="searchmode=plain,pgpmode=none,component=peek-stream" \
- https://registry.npmjs.org/peek-stream \
- https://registry.npmjs.org/peek-stream/-/peek-stream-(1(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+opts=\
+component=rollup-plugin-node-globals,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-rollup-plugin-node-globals-$1/ \
+ https://github.com/calvinmetcalf/rollup-plugin-node-globals/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# dependency of another component, query-string so ctype=nodejs won't work
-opts="searchmode=plain,pgpmode=none,component=decode-uri-component" \
- https://registry.npmjs.org/decode-uri-component \
- https://registry.npmjs.org/decode-uri-component/-/decode-uri-component-(0(?:.[\d\.]+)?)@ARCHIVE_EXT@ checksum
+opts=\
+component=ink,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-ink-$1/ \
+ https://github.com/vadimdemedes/ink/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
 
-# this component is probably not needed, not present in yarn.lock or any package.json
-opts="searchmode=plain,pgpmode=none,component=resolve-package-path" \
- https://registry.npmjs.org/resolve-package-path \
- https://registry.npmjs.org/resolve-package-path/-/resolve-package-path-(\d[\d\.]*)@ARCHIVE_EXT@ checksum
+opts=\
+component=ink-text-input,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-ink-text-input-$1/ \
+ https://github.com/vadimdemedes/ink-text-input/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+opts=\
+component=patch-console,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-patch-console-$1/ \
+ https://github.com/vadimdemedes/patch-console/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+opts=\
+component=yoga-wasm-web,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-yoga-wasm-web-$1/ \
+ https://github.com/shuding/yoga-wasm-web/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+# manually get commit hash c09405d58c624fd26d5e0a7ed98bd10c5cc4c05b
+opts=\
+component=yoga,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/yoga-$1/ \
+ https://github.com/facebook/yoga/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+opts=\
+component=alcalzone-ansi-tokenize,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-alcalzone-ansi-tokenize-$1/ \
+ https://github.com/AlCalzone/ansi-tokenize/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+opts=\
+component=zlib-ng,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/zlib-ng-$1/ \
+ https://github.com/zlib-ng/zlib-ng/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+# manually get commit hash 664462465d2730d51f04437c90ed7ebcbe19a36f
+opts=\
+component=arcanis-libzip,\
+dversionmangle=auto,\
+uversionmangle=s/-/\./g,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/arcanis-libzip-$1/ \
+ https://github.com/arcanis/libzip/tags .*/archive.*/rel-([\d\.\-]+).tar.gz ignore
+
+opts=\
+component=joycon,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-joycon-$1/ \
+ https://github.com/egoist/joycon/tags .*/archive.*/v?([\d\.]+).tar.gz ignore
+
+opts=\
+component=jsonc-parser,\
+ctype=nodejs,\
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-node-jsonc-parser-$1/ \
+ https://github.com/microsoft/node-jsonc-parser/tags .*/archive.*/v?([\d\.]+).tar.gz ignore

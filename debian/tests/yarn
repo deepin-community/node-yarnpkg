@@ -4,12 +4,17 @@ export HOME=${AUTOPKGTEST_TMP:-${TMPDIR:-/tmp}}
 mkdir -p ${HOME}/.cache/yarn
 set -ex
 cd
-mkdir project1
-cd project1
+yarnpkg --version
+mkdir test-project
+cd test-project
 yarnpkg init -y
+echo "nodeLinker: node-modules" > .yarnrc.yml
 yarnpkg add pretty-ms
-ls node_modules/pretty-ms/index.js
-rm -rf node_modules
-rm -rf package.json
+ls node_modules/pretty-ms/package.json
+rm -rf node_modules package.json .yarnrc.yml
 cd ..
-rm -rf project1
+rm -rf test-project
+
+node -e "require('@yarnpkg/core')"
+node -e "require('@yarnpkg/fslib')"
+node -e "require('@yarnpkg/builder')"

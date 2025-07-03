@@ -1,0 +1,64 @@
+Patch file for component zlib-ng
+1. Edited make rules that depend on test/ folder
+   which was excluded from upstream tarball
+--- a/zlib-ng/Makefile.in
++++ b/zlib-ng/Makefile.in
+@@ -264,27 +264,27 @@
+ endif
+ endif
+ 
+-example$(EXE): example.o $(TESTOBJG) $(STATICLIB)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ example.o $(TESTOBJG) $(TEST_LIBS) $(LDSHAREDLIBC)
++example$(EXE): $(TESTOBJG) $(STATICLIB)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(TESTOBJG) $(TEST_LIBS) $(LDSHAREDLIBC)
+ ifneq ($(STRIP),)
+ 	$(STRIP) $@
+ endif
+ 
+-minigzip$(EXE): minigzip.o $(TESTOBJG) $(STATICLIB)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ minigzip.o $(TESTOBJG) $(TEST_LIBS) $(LDSHAREDLIBC)
++minigzip$(EXE): $(TESTOBJG) $(STATICLIB)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(TESTOBJG) $(TEST_LIBS) $(LDSHAREDLIBC)
+ ifneq ($(STRIP),)
+ 	$(STRIP) $@
+ endif
+ 
+-minigzipsh$(EXE): minigzip.o $(PIC_TESTOBJG) $(SHAREDTARGET)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ minigzip.o $(PIC_TESTOBJG) $(SHAREDLIB) $(LDSHAREDLIBC)
++minigzipsh$(EXE): $(PIC_TESTOBJG) $(SHAREDTARGET)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(PIC_TESTOBJG) $(SHAREDLIB) $(LDSHAREDLIBC)
+ ifneq ($(STRIP),)
+ 	$(STRIP) $@
+ endif
+ 
+ 
+-examplesh$(EXE): example.o $(PIC_TESTOBJG) $(SHAREDTARGET)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ example.o $(PIC_TESTOBJG) $(SHAREDLIB) $(LDSHAREDLIBC)
++examplesh$(EXE): $(PIC_TESTOBJG) $(SHAREDTARGET)
++	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(PIC_TESTOBJG) $(SHAREDLIB) $(LDSHAREDLIBC)
+ ifneq ($(STRIP),)
+ 	$(STRIP) $@
+ endif
+--- a/zlib-ng/configure
++++ b/zlib-ng/configure
+@@ -2169,20 +2169,6 @@
+     PC_CFLAGS="-DWITH_GZFILEOP"
+ fi
+ 
+-# Generate Makefile in test dir
+-mkdir -p test
+-sed < $SRCDIR/test/Makefile.in "
+-/^CC *=/s#=.*#=$CC#
+-/^CFLAGS *=/s#=.*#=$CFLAGS#
+-/^LDFLAGS *=/s#=.*#=$LDFLAGS#
+-/^EXE *=/s#=.*#=$EXE#
+-/^alltests: */s#:.*#: $TEST#
+-/^SRCDIR *=/s#=.*#=$SRCDIR/test#
+-/^SRCTOP *=/s#=.*#=$SRCDIR#
+-/^EMU_RUN *=/s#=.*#=$EMU_RUN#
+-/^LIBNAME *=/s#=.*#=$LIBNAME#
+-" > test/Makefile
+-
+ # create zlib.pc with the configure results
+ sed < $SRCDIR/zlib.pc.in "
+ /^CC *=/s#=.*#=$CC#

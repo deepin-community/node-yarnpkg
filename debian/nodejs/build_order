@@ -1,0 +1,15 @@
+joycon
+jsonc-parser
+rollup-plugin-esbuild
+packages/yarnpkg-libzip
+packages/yarnpkg-pnp
+packages/yarnpkg-core
+alcalzone-ansi-tokenize
+patch-console
+yoga-wasm-web
+ink
+ink-text-input
+rollup-plugin-node-globals
+rollup-plugin-ignore
+algoliasearch-client-javascript
+packages/yarnpkg-cli
